@@ -1,13 +1,37 @@
-import type { Route } from "./+types/home";
-import { Welcome } from "../welcome/welcome";
+import { useEffect } from 'react'
+import { Link, useNavigate } from 'react-router'
 
-export function meta({}: Route.MetaArgs) {
-  return [
-    { title: "New React Router App" },
-    { name: "description", content: "Welcome to React Router!" },
-  ];
+import { usePuterStore } from '~/lib/puter'
+
+export function meta() {
+	return [
+		{ title: 'Resume Analyzer' },
+		{
+			name: 'description',
+			content:
+				'Generate AI-powered resume feedback for landing that dream job!',
+		},
+	]
 }
 
 export default function Home() {
-  return <Welcome />;
+	const { auth } = usePuterStore()
+
+	const navigate = useNavigate()
+
+	useEffect(() => {
+		if (!auth.isAuthenticated) navigate('/auth?next=/')
+	}, [auth.isAuthenticated, navigate])
+
+	if (!auth.isAuthenticated) {
+		return null
+	}
+
+	return (
+		<main className='flex h-screen items-center justify-center'>
+			<Link to='/upload' className='rounded-2xl border p-4'>
+				Upload Resume
+			</Link>
+		</main>
+	)
 }
