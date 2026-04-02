@@ -1,9 +1,9 @@
 import { useEffect } from 'react'
 import { useLocation, useNavigate } from 'react-router'
-
 import { useShallow } from 'zustand/shallow'
-import { Button } from '~/components/Button'
-import { usePuterStore } from '~/lib/puter'
+
+import { Button } from '@/components/Button'
+import { usePuterStore } from '@/lib/puter'
 
 export function meta() {
 	return [

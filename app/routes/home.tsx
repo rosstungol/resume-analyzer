@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { Link, useNavigate } from 'react-router'
 
-import { usePuterStore } from '~/lib/puter'
+import { usePuterStore } from '@/lib/puter'
 
 export function meta() {
 	return [
