@@ -6,7 +6,7 @@ import type {
 	KVItem,
 	PuterChatOptions,
 	PuterUser,
-} from '~/types/puter'
+} from '@/data/types/puter'
 
 declare global {
 	interface Window {
