@@ -53,11 +53,11 @@ export type AIResponse = {
 	index: number
 	message: {
 		role: string
-		content: string | unknown[]
+		content: string | any[]
 		refusal: null | string
-		annotations: unknown[]
+		annotations: any[]
 	}
-	logprobs: null | unknown
+	logprobs: null | any
 	finish_reason: string
 	usage: {
 		type: string
