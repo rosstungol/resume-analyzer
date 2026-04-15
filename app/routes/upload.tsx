@@ -1,5 +1,5 @@
 import { type SyntheticEvent, useState } from 'react'
-import { useNavigate } from 'react-router'
+import { Link, useNavigate } from 'react-router'
 import { useShallow } from 'zustand/shallow'
 
 import { Button } from '@/components/Button'
@@ -18,7 +18,7 @@ export function meta() {
 }
 
 export default function Upload() {
-	const { ai, auth, fs, isLoading, kv } = usePuterStore(
+	const { ai, fs, kv } = usePuterStore(
 		useShallow((state) => ({
 			ai: state.ai,
 			auth: state.auth,
@@ -84,7 +84,6 @@ export default function Upload() {
 		await kv.set(`resume:${uuid}`, JSON.stringify(data))
 		setStatusText('Analysis complete. Redirecting...')
 
-		console.log(data)
 		navigate(`/resume/${uuid}`)
 	}
 
@@ -107,58 +106,63 @@ export default function Upload() {
 	}
 
 	return (
-		<main className='flex h-screen items-center justify-center'>
-			<section>
-				<h1>{statusText}</h1>
-				{isProcessing ? (
-					<p>Processing...</p>
-				) : (
-					<p className='mb-8'>Upload your resume.</p>
-				)}
-				{!isProcessing && (
-					<form
-						id='upload-form'
-						onSubmit={handleSubmit}
-						className='flex w-96 flex-col gap-6'
-					>
-						<div className='flex flex-col gap-2'>
-							<label htmlFor='company-name'>Company Name</label>
-							<input
-								type='text'
-								id='company-name'
-								name='company-name'
-								placeholder='Company Name'
-								className='rounded-lg border border-gray-600 p-3'
-							/>
-						</div>
-						<div className='flex flex-col gap-2'>
-							<label htmlFor='job-title'>Job Title</label>
-							<input
-								type='text'
-								id='job-title'
-								name='job-title'
-								placeholder='Job Title'
-								className='rounded-lg border border-gray-600 p-3'
-							/>
-						</div>
-						<div className='flex flex-col gap-2'>
-							<label htmlFor='job-description'>Job Description</label>
-							<textarea
-								rows={4}
-								id='job-description'
-								name='job-description'
-								placeholder='Job Description'
-								className='rounded-lg border border-gray-600 p-3'
-							/>
-						</div>
-						<div className='flex flex-col gap-2'>
-							<label htmlFor='uploader'>Upload Resume</label>
-							<FileUploader onFileSelect={handleFileSelect} />
-						</div>
-						<Button type='submit'>Analyze Resume</Button>
-					</form>
-				)}
-			</section>
-		</main>
+		<div className='h-screen'>
+			<nav className='p-8'>
+				<Link to='/'>⬅ back to home</Link>
+			</nav>
+			<main className='flex items-center justify-center'>
+				<section>
+					<h1>{statusText}</h1>
+					{isProcessing ? (
+						<p>Processing...</p>
+					) : (
+						<p className='mb-8'>Upload your resume.</p>
+					)}
+					{!isProcessing && (
+						<form
+							id='upload-form'
+							onSubmit={handleSubmit}
+							className='flex w-96 flex-col gap-6'
+						>
+							<div className='flex flex-col gap-2'>
+								<label htmlFor='company-name'>Company Name</label>
+								<input
+									type='text'
+									id='company-name'
+									name='company-name'
+									placeholder='Company Name'
+									className='rounded-lg border border-gray-600 p-3'
+								/>
+							</div>
+							<div className='flex flex-col gap-2'>
+								<label htmlFor='job-title'>Job Title</label>
+								<input
+									type='text'
+									id='job-title'
+									name='job-title'
+									placeholder='Job Title'
+									className='rounded-lg border border-gray-600 p-3'
+								/>
+							</div>
+							<div className='flex flex-col gap-2'>
+								<label htmlFor='job-description'>Job Description</label>
+								<textarea
+									rows={4}
+									id='job-description'
+									name='job-description'
+									placeholder='Job Description'
+									className='rounded-lg border border-gray-600 p-3'
+								/>
+							</div>
+							<div className='flex flex-col gap-2'>
+								<label htmlFor='uploader'>Upload Resume</label>
+								<FileUploader onFileSelect={handleFileSelect} />
+							</div>
+							<Button type='submit'>Analyze Resume</Button>
+						</form>
+					)}
+				</section>
+			</main>
+		</div>
 	)
 }

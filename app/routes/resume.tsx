@@ -54,15 +54,13 @@ export default function Resume() {
 			setResumeUrl(resumeUrl)
 
 			setFeedback(data.feedback)
-
-			console.log({ resumeUrl, feedback: data.feedback })
 		}
 
 		loadResume()
 	}, [id, fs.read, kv.get])
 
 	return (
-		<>
+		<div className='h-screen'>
 			<nav className='p-8'>
 				<Link to='/'>⬅ back to home</Link>
 			</nav>
@@ -90,6 +88,6 @@ export default function Resume() {
 					</div>
 				)}
 			</main>
-		</>
+		</div>
 	)
 }
