@@ -1,9 +1,10 @@
 export function ScoreCircle({ score = 75 }: { score: number }) {
+	const clampedScore = Math.max(0, Math.min(100, score))
 	const radius = 40
 	const stroke = 8
 	const normalizedRadius = radius - stroke / 2
 	const circumference = 2 * Math.PI * normalizedRadius
-	const progress = score / 100
+	const progress = clampedScore / 100
 	const strokeDashoffset = circumference * (1 - progress)
 
 	return (
@@ -42,10 +43,10 @@ export function ScoreCircle({ score = 75 }: { score: number }) {
 				/>
 			</svg>
 
-			<div className='absolute inset-0 flex flex-col items-center justify-center'>
-				<div className='flex flex-col items-center'>
-					<p className='font-semibold text-3xl'>{score}</p>
-					<p className='text-gray-400 text-xs'>/ 100</p>
+			<div className='absolute inset-0 flex-center flex-col'>
+				<div className='flex flex-col items-center font-heading'>
+					<p className='font-semibold text-3xl'>{clampedScore}</p>
+					<p className='text-mauve-400 text-xs'>/ 100</p>
 				</div>
 			</div>
 		</div>

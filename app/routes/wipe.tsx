@@ -1,6 +1,9 @@
+import { Trash } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router'
 import { useShallow } from 'zustand/shallow'
+
+import { Button } from '@/components/ui/Button'
 import type { FSItem } from '@/data/types/puter'
 import { usePuterStore } from '@/lib/puter'
 
@@ -39,9 +42,7 @@ const WipeApp = () => {
       setFiles(files)
     }
 
-    files.forEach(async (file) => {
-      await fs.delete(file.path)
-    })
+    await Promise.all(files.map((file) => fs.delete(file.path)))
 
     await kv.flush()
     loadFiles()
@@ -67,13 +68,10 @@ const WipeApp = () => {
         ))}
       </div>
       <div>
-        <button
-          type='button'
-          className='cursor-pointer rounded-md bg-blue-500 px-4 py-2 text-white'
-          onClick={() => handleDelete()}
-        >
-          Wipe App Data
-        </button>
+        <Button variant='destructive' onClick={() => handleDelete()}>
+          <Trash />
+          wipe app data
+        </Button>
       </div>
     </div>
   )

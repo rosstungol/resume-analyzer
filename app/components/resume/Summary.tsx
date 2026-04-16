@@ -1,6 +1,6 @@
 import type { Feedback } from '@/data/types'
-import { ScoreBadge } from './ScoreBadge'
-import { ScoreCircle } from './ScoreCircle'
+import { ScoreBadge } from '../ui/ScoreBadge'
+import { ScoreCircle } from '../ui/ScoreCircle'
 
 function Category({ title, score }: { title: string; score: number }) {
 	return (
@@ -12,7 +12,7 @@ function Category({ title, score }: { title: string; score: number }) {
 
 			<p className='flex items-center gap-2'>
 				<span className='font-semibold text-xl'>{score}</span>
-				<span className='text-gray-400 text-xs'>/ 100</span>
+				<span className='text-mauve-400 text-xs'>/ 100</span>
 			</p>
 		</div>
 	)
@@ -20,7 +20,7 @@ function Category({ title, score }: { title: string; score: number }) {
 
 export function Summary({ feedback }: { feedback: Feedback }) {
 	return (
-		<div className='flex flex-col gap-6 rounded-lg border border-gray-600 p-6 shadow-md'>
+		<div className='flex flex-col gap-6 rounded-lg border border-mauve-600 p-6 shadow-md'>
 			<div className='flex items-center justify-between'>
 				<h2 className='text-2xl'>Overall Score</h2>
 				<ScoreCircle score={feedback.overallScore} />

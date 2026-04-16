@@ -1,6 +1,10 @@
-import clsx from 'clsx'
+import { cn } from '@/lib/utils'
 
 export function ScoreBadge({ score }: { score: number }) {
+	if (!Number.isFinite(score) || score < 0) {
+		return null
+	}
+
 	let badgeText = ''
 	let badgeColor = ''
 
@@ -17,8 +21,8 @@ export function ScoreBadge({ score }: { score: number }) {
 
 	return (
 		<div
-			className={clsx(
-				'inline-block rounded-lg border px-2 py-1 font-semibold text-gray-700 text-sm',
+			className={cn(
+				'inline-block rounded-lg border px-2 py-1 font-semibold text-mauve-700 text-sm',
 				badgeColor
 			)}
 		>

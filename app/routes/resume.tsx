@@ -1,93 +1,102 @@
 import { SquareArrowOutUpRight } from 'lucide-react'
 import { useEffect, useState } from 'react'
-import { Link, useNavigate, useParams } from 'react-router'
+import { useNavigate, useParams } from 'react-router'
 import { useShallow } from 'zustand/shallow'
-import { ATS } from '@/components/ATS'
-import { Details } from '@/components/Details'
-import { Summary } from '@/components/Summary'
+
+import { Navbar } from '@/components/layout/Navbar'
+import { ATS } from '@/components/resume/ATS'
+import { Details } from '@/components/resume/Details'
+import { Summary } from '@/components/resume/Summary'
+import { LinkButton } from '@/components/ui/LinkButton'
 import type { Feedback } from '@/data/types'
 import { usePuterStore } from '@/lib/puter'
 
 export function meta() {
-	return [
-		{ title: 'Resume Analyzer | Resume' },
-		{
-			name: 'description',
-			content: 'Detailed overview of your resume',
-		},
-	]
+  return [
+    { title: 'resumyze | resume' },
+    {
+      name: 'description',
+      content: 'Detailed overview of your resume',
+    },
+  ]
 }
 
 export default function Resume() {
-	const { auth, fs, isLoading, kv } = usePuterStore(
-		useShallow((state) => ({
-			auth: state.auth,
-			fs: state.fs,
-			isLoading: state.isLoading,
-			kv: state.kv,
-		}))
-	)
+  const { auth, fs, isLoading, kv } = usePuterStore(
+    useShallow((state) => ({
+      auth: state.auth,
+      fs: state.fs,
+      isLoading: state.isLoading,
+      kv: state.kv,
+    })),
+  )
 
-	const { id } = useParams()
-	const [resumeUrl, setResumeUrl] = useState('')
-	const [feedback, setFeedback] = useState<Feedback | null>(null)
-	const navigate = useNavigate()
+  const { id } = useParams()
+  const [resumeUrl, setResumeUrl] = useState('')
+  const [feedback, setFeedback] = useState<Feedback | null>(null)
+  const navigate = useNavigate()
 
-	useEffect(() => {
-		if (!isLoading && !auth.isAuthenticated)
-			navigate(`/auth?next=/resume/${id}`)
-	}, [auth.isAuthenticated, navigate, id, isLoading])
+  useEffect(() => {
+    if (!isLoading && !auth.isAuthenticated)
+      navigate(`/auth?next=/resume/${id}`)
+  }, [auth.isAuthenticated, navigate, id, isLoading])
 
-	useEffect(() => {
-		const loadResume = async () => {
-			const resume = await kv.get(`resume:${id}`)
+  useEffect(() => {
+    let objectUrl: string | null = null
 
-			if (!resume) return
+    const loadResume = async () => {
+      try {
+        const resume = await kv.get(`resume:${id}`)
 
-			const data = JSON.parse(resume)
+        if (!resume) return
 
-			const resumeBlob = await fs.read(data.resumePath)
-			if (!resumeBlob) return
+        const data = JSON.parse(resume)
 
-			const pdfBlob = new Blob([resumeBlob], { type: 'application/pdf' })
-			const resumeUrl = URL.createObjectURL(pdfBlob)
-			setResumeUrl(resumeUrl)
+        const resumeBlob = await fs.read(data.resumePath)
+        if (!resumeBlob) return
 
-			setFeedback(data.feedback)
-		}
+        const pdfBlob = new Blob([resumeBlob], { type: 'application/pdf' })
+        objectUrl = URL.createObjectURL(pdfBlob)
+        setResumeUrl(objectUrl)
 
-		loadResume()
-	}, [id, fs.read, kv.get])
+        setFeedback(data.feedback)
+      } catch (error) {
+        console.error('Failed to load resume:', error)
+      }
+    }
 
-	return (
-		<div className='h-screen'>
-			<nav className='p-8'>
-				<Link to='/'>⬅ back to home</Link>
-			</nav>
-			<main>
-				<div className='flex items-center justify-between px-16'>
-					<h1 className='text-3xl'>Resume Review</h1>
-					<a
-						href={resumeUrl}
-						target='_blank'
-						rel='noopener noreferrer'
-						className='flex cursor-pointer gap-2 rounded-2xl border p-4'
-					>
-						<span>view resume</span>
-						<SquareArrowOutUpRight />
-					</a>
-				</div>
-				{feedback && (
-					<div className='flex flex-col gap-6 px-16 py-12'>
-						<Summary feedback={feedback} />
-						<ATS
-							score={feedback.ATS.score || 0}
-							suggestions={feedback.ATS.tips}
-						/>
-						<Details feedback={feedback} />
-					</div>
-				)}
-			</main>
-		</div>
-	)
+    loadResume()
+
+    return () => {
+      if (objectUrl) {
+        URL.revokeObjectURL(objectUrl)
+      }
+    }
+  }, [id, fs.read, kv.get])
+
+  return (
+    <div className='h-screen'>
+      <Navbar>
+        <LinkButton href={resumeUrl} variant='secondary' fileRoute>
+          <span>view resume</span>
+          <SquareArrowOutUpRight />
+        </LinkButton>
+      </Navbar>
+      <main>
+        <div className='flex items-center justify-between px-16'>
+          <h2 className='font-heading text-3xl'>Resume Review</h2>
+        </div>
+        {feedback && (
+          <div className='flex flex-col gap-6 px-16 py-12'>
+            <Summary feedback={feedback} />
+            <ATS
+              score={feedback.ATS.score || 0}
+              suggestions={feedback.ATS.tips}
+            />
+            <Details feedback={feedback} />
+          </div>
+        )}
+      </main>
+    </div>
+  )
 }
