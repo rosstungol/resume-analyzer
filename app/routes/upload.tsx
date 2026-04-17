@@ -1,6 +1,6 @@
 import { FileSearchCorner } from 'lucide-react'
 import { type SyntheticEvent, useState } from 'react'
-import { useNavigate } from 'react-router'
+import { Navigate, useNavigate } from 'react-router'
 import { useShallow } from 'zustand/shallow'
 
 import { Navbar } from '@/components/layout/Navbar'
@@ -20,9 +20,10 @@ export function meta() {
 }
 
 export default function Upload() {
-	const { ai, fs, kv } = usePuterStore(
+	const { ai, auth, fs, kv } = usePuterStore(
 		useShallow((state) => ({
 			ai: state.ai,
+			auth: state.auth,
 			fs: state.fs,
 			kv: state.kv,
 		}))
@@ -31,6 +32,10 @@ export default function Upload() {
 	const [isProcessing, setIsProcessing] = useState(false)
 	const [statusText, setStatusText] = useState('')
 	const [file, setFile] = useState<File | null>(null)
+
+	if (!auth.isAuthenticated) {
+		return <Navigate to='/' replace />
+	}
 
 	const handleFileSelect = (file: File | null) => {
 		setFile(file)

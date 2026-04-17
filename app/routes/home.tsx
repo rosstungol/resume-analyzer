@@ -47,10 +47,15 @@ export default function Home() {
 
 			try {
 				const resumes = (await kv.list('resume:*', true)) as KVItem[]
-				const parsedResumes = resumes?.map(
-					(resume) => JSON.parse(resume.value) as Resume
-				)
-				setResumes(parsedResumes || [])
+				const parsedResumes = (resumes ?? []).flatMap((resume) => {
+					try {
+						return [JSON.parse(resume.value) as Resume]
+					} catch (e) {
+						console.error('Skipping malformed resume:', resume.key, e)
+						return []
+					}
+				})
+				setResumes(parsedResumes)
 			} catch (error) {
 				console.error('Failed to load resumes:', error)
 				setResumes([])

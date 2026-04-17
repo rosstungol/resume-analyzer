@@ -13,11 +13,11 @@ type LinkButtonProps = {
 }
 
 const baseStyles =
-	'flex gap-2 rounded-lg border-2 border-mauve-600 p-4 transition-all font-semibold font-heading cursor-pointer'
+	'flex gap-2 rounded-lg border-2 border-mauve-300 p-4 transition-all font-semibold font-heading cursor-pointer'
 const hoverStyles = 'hover:-translate-y-0.5 hover:card-shadow'
 const variantStyles: Record<LinkButtonVariant, string> = {
 	primary: 'bg-indigo-400 text-white',
-	secondary: 'bg-white border-mauve-600 text-mauve-800',
+	secondary: 'bg-white border-mauve-300 text-mauve-800',
 }
 
 export function LinkButton({
