@@ -1,6 +1,6 @@
 import { Loader, SquareArrowOutUpRight } from 'lucide-react'
 import { useEffect, useState } from 'react'
-import { useNavigate, useParams } from 'react-router'
+import { Navigate, useParams } from 'react-router'
 import { useShallow } from 'zustand/shallow'
 
 import { Navbar } from '@/components/layout/Navbar'
@@ -22,7 +22,7 @@ export function meta() {
 }
 
 export default function Resume() {
-	const { auth, fs, isLoading, kv } = usePuterStore(
+	const { auth, fs, kv } = usePuterStore(
 		useShallow((state) => ({
 			auth: state.auth,
 			fs: state.fs,
@@ -34,12 +34,6 @@ export default function Resume() {
 	const { id } = useParams()
 	const [resumeUrl, setResumeUrl] = useState('')
 	const [feedback, setFeedback] = useState<Feedback | null>(null)
-	const navigate = useNavigate()
-
-	useEffect(() => {
-		if (!isLoading && !auth.isAuthenticated)
-			navigate(`/auth?next=/resume/${id}`)
-	}, [auth.isAuthenticated, navigate, id, isLoading])
 
 	useEffect(() => {
 		let objectUrl: string | null = null
@@ -73,6 +67,10 @@ export default function Resume() {
 			}
 		}
 	}, [id, fs, kv])
+
+	if (!auth.isAuthenticated) {
+		return <Navigate to='/' replace />
+	}
 
 	return (
 		<div className='h-screen'>
