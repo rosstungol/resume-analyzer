@@ -11,7 +11,7 @@ import { usePuterStore } from '@/lib/puter'
 
 export function meta() {
 	return [
-		{ title: 'resumyze | upload' },
+		{ title: 'resyze | upload' },
 		{
 			name: 'description',
 			content: 'Upload your resume.',
@@ -23,9 +23,7 @@ export default function Upload() {
 	const { ai, fs, kv } = usePuterStore(
 		useShallow((state) => ({
 			ai: state.ai,
-			auth: state.auth,
 			fs: state.fs,
-			isLoading: state.isLoading,
 			kv: state.kv,
 		}))
 	)

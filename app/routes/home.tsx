@@ -12,98 +12,100 @@ import type { KVItem } from '@/data/types/puter'
 import { usePuterStore } from '@/lib/puter'
 
 export function meta() {
-  return [
-    { title: 'resumyze' },
-    {
-      name: 'description',
-      content:
-        'Generate AI-powered resume feedback for landing that dream job!',
-    },
-  ]
+	return [
+		{ title: 'resyze' },
+		{
+			name: 'description',
+			content:
+				'Generate AI-powered resume feedback for landing that dream job!',
+		},
+	]
 }
 
 export default function Home() {
-  const { auth, isLoading, kv } = usePuterStore(
-    useShallow((state) => ({
-      auth: state.auth,
-      isLoading: state.isLoading,
-      kv: state.kv,
-    })),
-  )
+	const { auth, isLoading, kv } = usePuterStore(
+		useShallow((state) => ({
+			auth: state.auth,
+			isLoading: state.isLoading,
+			kv: state.kv,
+		}))
+	)
 
-  const [resumes, setResumes] = useState<Resume[]>([])
-  const [loadingResumes, setLoadingResumes] = useState<boolean>(false)
+	const [resumes, setResumes] = useState<Resume[]>([])
+	const [loadingResumes, setLoadingResumes] = useState<boolean>(
+		auth.isAuthenticated
+	)
 
-  useEffect(() => {
-    if (!auth.isAuthenticated) {
-      setResumes([])
-      return
-    }
+	useEffect(() => {
+		if (!auth.isAuthenticated) {
+			setResumes([])
+			return
+		}
 
-    const loadResumes = async () => {
-      setLoadingResumes(true)
+		const loadResumes = async () => {
+			setLoadingResumes(true)
 
-      try {
-        const resumes = (await kv.list('resume:*', true)) as KVItem[]
-        const parsedResumes = resumes?.map(
-          (resume) => JSON.parse(resume.value) as Resume,
-        )
-        setResumes(parsedResumes || [])
-      } catch (error) {
-        console.error('Failed to load resumes:', error)
-        setResumes([])
-      } finally {
-        setLoadingResumes(false)
-      }
-    }
+			try {
+				const resumes = (await kv.list('resume:*', true)) as KVItem[]
+				const parsedResumes = resumes?.map(
+					(resume) => JSON.parse(resume.value) as Resume
+				)
+				setResumes(parsedResumes || [])
+			} catch (error) {
+				console.error('Failed to load resumes:', error)
+				setResumes([])
+			} finally {
+				setLoadingResumes(false)
+			}
+		}
 
-    loadResumes()
-  }, [kv, auth.isAuthenticated])
+		loadResumes()
+	}, [kv, auth.isAuthenticated])
 
-  return (
-    <>
-      <Navbar>
-        {isLoading ? (
-          <Loader className='size-8 animate-spin text-indigo-400' />
-        ) : auth.isAuthenticated ? (
-          <Button variant='secondary' onClick={auth.signOut}>
-            <LogOut />
-            log out
-          </Button>
-        ) : (
-          <Button onClick={auth.signIn}>
-            <LogIn />
-            log in
-          </Button>
-        )}
-        {auth.isAuthenticated && (
-          <LinkButton variant='primary' href='/upload'>
-            <FileUp />
-            <span>upload resume</span>
-          </LinkButton>
-        )}
-      </Navbar>
+	return (
+		<>
+			<Navbar>
+				{isLoading ? (
+					<Loader className='size-8 animate-spin text-indigo-400' />
+				) : auth.isAuthenticated ? (
+					<Button variant='secondary' onClick={auth.signOut}>
+						<LogOut />
+						log out
+					</Button>
+				) : (
+					<Button onClick={auth.signIn}>
+						<LogIn />
+						log in
+					</Button>
+				)}
+				{auth.isAuthenticated && (
+					<LinkButton variant='primary' href='/upload'>
+						<FileUp />
+						<span>upload resume</span>
+					</LinkButton>
+				)}
+			</Navbar>
 
-      <section className='py-12'>
-        {auth.isAuthenticated ? (
-          <div>
-            {!loadingResumes && resumes.length === 0 && <GridBlankState />}
-            {loadingResumes && (
-              <Loader className='m-auto size-16 animate-spin text-indigo-400' />
-            )}
-            {!loadingResumes && resumes.length > 0 && (
-              <>
-                <h2 className='mb-4 font-heading font-semibold text-2xl'>
-                  resume reviews
-                </h2>
-                <ResumeGrid resumes={resumes} />
-              </>
-            )}
-          </div>
-        ) : (
-          <div>hero section</div>
-        )}
-      </section>
-    </>
-  )
+			<section className='py-12'>
+				{auth.isAuthenticated ? (
+					<div>
+						{!loadingResumes && resumes.length === 0 && <GridBlankState />}
+						{loadingResumes && (
+							<Loader className='m-auto size-16 animate-spin text-indigo-400' />
+						)}
+						{!loadingResumes && resumes.length > 0 && (
+							<>
+								<h2 className='mb-4 font-heading font-semibold text-2xl'>
+									resume reviews
+								</h2>
+								<ResumeGrid resumes={resumes} />
+							</>
+						)}
+					</div>
+				) : (
+					<div>hero section</div>
+				)}
+			</section>
+		</>
+	)
 }

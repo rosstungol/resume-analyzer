@@ -1,5 +1,7 @@
 export function ScoreCircle({ score = 75 }: { score: number }) {
-	const clampedScore = Math.max(0, Math.min(100, score))
+	const clampedScore = Number.isFinite(score)
+		? Math.max(0, Math.min(100, score))
+		: 0
 	const radius = 40
 	const stroke = 8
 	const normalizedRadius = radius - stroke / 2
