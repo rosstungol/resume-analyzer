@@ -11,7 +11,7 @@ import { usePuterStore } from '@/lib/puter'
 
 export function meta() {
 	return [
-		{ title: 'resyze | upload' },
+		{ title: 'resmyze | upload' },
 		{
 			name: 'description',
 			content: 'Upload your resume.',

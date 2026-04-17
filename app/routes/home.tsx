@@ -13,7 +13,7 @@ import { usePuterStore } from '@/lib/puter'
 
 export function meta() {
 	return [
-		{ title: 'resyze' },
+		{ title: 'resmyze' },
 		{
 			name: 'description',
 			content:

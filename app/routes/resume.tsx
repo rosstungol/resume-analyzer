@@ -13,7 +13,7 @@ import { usePuterStore } from '@/lib/puter'
 
 export function meta() {
 	return [
-		{ title: 'resyze | resume' },
+		{ title: 'resmyze | resume' },
 		{
 			name: 'description',
 			content: 'Detailed overview of your resume',
