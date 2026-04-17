@@ -1,6 +1,7 @@
-import clsx from 'clsx'
 import type { ReactNode } from 'react'
 import { createContext, useContext, useState } from 'react'
+
+import { cn } from '@/lib/utils'
 
 type AccordionContextType = {
 	activeItems: string[]
@@ -56,7 +57,10 @@ export function Accordion({
 			value={{ activeItems, toggleItem, isItemActive }}
 		>
 			<div
-				className={`space-y-2 rounded-lg border border-gray-600 shadow-md ${className}`}
+				className={cn(
+					'space-y-2 rounded-lg border border-mauve-600 shadow-md',
+					className
+				)}
 			>
 				{children}
 			</div>
@@ -80,9 +84,9 @@ export const AccordionItem: React.FC<AccordionItemProps> = ({
 	return (
 		<div
 			id={id}
-			className={clsx(
+			className={cn(
 				'overflow-hidden',
-				withBorder && 'border-gray-200 border-b',
+				withBorder && 'border-mauve-200 border-b',
 				className
 			)}
 		>
@@ -111,7 +115,7 @@ export const AccordionHeader: React.FC<AccordionHeaderProps> = ({
 
 	const defaultIcon = (
 		<svg
-			className={clsx('h-5 w-5 transition-transform duration-200', {
+			className={cn('h-5 w-5 transition-transform duration-200', {
 				'rotate-180': isActive,
 			})}
 			fill='none'
@@ -137,8 +141,12 @@ export const AccordionHeader: React.FC<AccordionHeaderProps> = ({
 		<button
 			type='button'
 			onClick={handleClick}
-			className={`flex w-full cursor-pointer items-center justify-between px-4 py-3 text-left transition-colors duration-200 focus:outline-none ${className}
-      `}
+			aria-expanded={isActive}
+			aria-controls={`accordion-content-${itemId}`}
+			className={cn(
+				'flex w-full cursor-pointer items-center justify-between px-4 py-3 text-left transition-colors duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2',
+				className
+			)}
 		>
 			<div className='flex items-center space-x-3'>
 				{iconPosition === 'left' && (icon || defaultIcon)}
@@ -165,10 +173,12 @@ export const AccordionContent: React.FC<AccordionContentProps> = ({
 
 	return (
 		<div
-			className={`overflow-hidden transition-all duration-300 ease-in-out ${isActive ? 'max-h-fit opacity-100' : 'max-h-0 opacity-0'}
-        ${className}
-
-      `}
+			id={`accordion-content-${itemId}`}
+			className={cn(
+				'overflow-hidden transition-all duration-300 ease-in-out',
+				isActive ? 'max-h- opacity-100' : 'max-h-0 opacity-0',
+				className
+			)}
 		>
 			<div className='px-4 py-3'>{children}</div>
 		</div>

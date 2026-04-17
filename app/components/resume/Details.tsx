@@ -1,13 +1,14 @@
-import clsx from 'clsx'
 import { BadgeAlert, BadgeCheck } from 'lucide-react'
+
 import type { Feedback } from '@/data/types'
+import { cn } from '@/lib/utils'
+import { ScoreBadge } from '../ui/ScoreBadge'
 import {
 	Accordion,
 	AccordionContent,
 	AccordionHeader,
 	AccordionItem,
 } from './Accordion'
-import { ScoreBadge } from './ScoreBadge'
 
 const CategoryHeader = ({
 	title,
@@ -23,7 +24,7 @@ const CategoryHeader = ({
 				<span className='font-semibold text-2xl'>
 					{title} - {categoryScore}
 				</span>
-				<span className='text-gray-400 text-sm'>/ 100</span>
+				<span className='text-mauve-400 text-sm'>/ 100</span>
 			</h2>
 
 			<ScoreBadge score={categoryScore} />
@@ -38,22 +39,19 @@ const CategoryContent = ({
 }) => {
 	return (
 		<div className='flex w-full flex-col items-center gap-4'>
-			<div className='grid w-full grid-cols-2 gap-4 rounded-lg bg-gray-50 px-5 py-4'>
+			<div className='grid w-full grid-cols-2 gap-4 rounded-lg bg-mauve-50 px-5 py-4'>
 				{tips.map((tip) => (
-					<div
-						className='flex flex-row items-center gap-2'
-						key={crypto.randomUUID()}
-					>
+					<div className='flex flex-row items-center gap-2' key={tip.tip}>
 						{tip.type === 'good' ? <BadgeCheck /> : <BadgeAlert />}
-						<p className='text-gray-500 text-xl'>{tip.tip}</p>
+						<p className='text-mauve-500 text-xl'>{tip.tip}</p>
 					</div>
 				))}
 			</div>
 			<div className='flex w-full flex-col gap-4'>
 				{tips.map((tip) => (
 					<div
-						key={crypto.randomUUID() + tip.tip}
-						className={clsx(
+						key={tip.tip}
+						className={cn(
 							'flex flex-col gap-2 rounded-2xl p-4',
 							tip.type === 'good'
 								? 'border border-green-200 bg-green-50 text-green-700'

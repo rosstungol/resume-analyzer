@@ -1,15 +1,19 @@
-import { Loader } from 'lucide-react'
+import { FileUp, Loader, LogIn, LogOut } from 'lucide-react'
 import { useEffect, useState } from 'react'
-import { Link, useNavigate } from 'react-router'
 import { useShallow } from 'zustand/shallow'
-import { ScoreCircle } from '@/components/ScoreCircle'
+
+import { GridBlankState } from '@/components/home/GridBlankState'
+import { ResumeGrid } from '@/components/home/ResumeGrid'
+import { Navbar } from '@/components/layout/Navbar'
+import { Button } from '@/components/ui/Button'
+import { LinkButton } from '@/components/ui/LinkButton'
 import type { Resume } from '@/data/types'
 import type { KVItem } from '@/data/types/puter'
 import { usePuterStore } from '@/lib/puter'
 
 export function meta() {
 	return [
-		{ title: 'Resume Analyzer' },
+		{ title: 'resmyze' },
 		{
 			name: 'description',
 			content:
@@ -19,82 +23,94 @@ export function meta() {
 }
 
 export default function Home() {
-	const { auth, kv } = usePuterStore(
+	const { auth, isLoading, kv } = usePuterStore(
 		useShallow((state) => ({
 			auth: state.auth,
+			isLoading: state.isLoading,
 			kv: state.kv,
 		}))
 	)
 
 	const [resumes, setResumes] = useState<Resume[]>([])
-	const [loadingResumes, setLoadingResumes] = useState<boolean>(false)
-
-	const navigate = useNavigate()
-
-	useEffect(() => {
-		if (!auth.isAuthenticated) navigate('/auth?next=/')
-	}, [auth.isAuthenticated, navigate])
+	const [loadingResumes, setLoadingResumes] = useState<boolean>(
+		auth.isAuthenticated
+	)
 
 	useEffect(() => {
+		if (!auth.isAuthenticated) {
+			setResumes([])
+			return
+		}
+
 		const loadResumes = async () => {
 			setLoadingResumes(true)
 
-			const resumes = (await kv.list('resume:*', true)) as KVItem[]
-
-			const parsedResumes = resumes?.map(
-				(resume) => JSON.parse(resume.value) as Resume
-			)
-
-			setResumes(parsedResumes || [])
-
-			setLoadingResumes(false)
+			try {
+				const resumes = (await kv.list('resume:*', true)) as KVItem[]
+				const parsedResumes = (resumes ?? []).flatMap((resume) => {
+					try {
+						return [JSON.parse(resume.value) as Resume]
+					} catch (e) {
+						console.error('Skipping malformed resume:', resume.key, e)
+						return []
+					}
+				})
+				setResumes(parsedResumes)
+			} catch (error) {
+				console.error('Failed to load resumes:', error)
+				setResumes([])
+			} finally {
+				setLoadingResumes(false)
+			}
 		}
 
 		loadResumes()
-	}, [kv])
+	}, [kv, auth.isAuthenticated])
 
-	if (!auth.isAuthenticated) {
-		return (
-			<div className='flex size-16 h-screen w-full items-center justify-center'>
-				<Loader className='animate-spin' />
-			</div>
-		)
-	}
 	return (
-		<div className='h-screen'>
-			<nav className='p-16'>
-				<Link to='/upload' className='rounded-2xl border p-4'>
-					Upload Resume
-				</Link>
-			</nav>
-			<main className='p-20'>
-				<div>
-					{!loadingResumes && resumes.length === 0 && (
-						<h2 className='text-center'>No resumes found.</h2>
-					)}
-					{loadingResumes && <Loader className='m-auto size-16 animate-spin' />}
-					<ul className='grid grid-cols-3 gap-6'>
-						{!loadingResumes &&
-							resumes.length > 0 &&
-							resumes.map((item) => (
-								<li key={item.id} className='rounded-lg border border-gray-600'>
-									<Link
-										to={`/resume/${item.id}`}
-										className='flex cursor-pointer items-center gap-2 p-4'
-									>
-										<ScoreCircle score={item.feedback.overallScore} />
-										<div className='truncate'>
-											<p className='line-clamp-2 text-xl'>{item.jobTitle}</p>
-											<p className='text-gray-500 text-sm'>
-												{item.companyName}
-											</p>
-										</div>
-									</Link>
-								</li>
-							))}
-					</ul>
-				</div>
-			</main>
-		</div>
+		<>
+			<Navbar>
+				{isLoading ? (
+					<Loader className='size-8 animate-spin text-indigo-400' />
+				) : auth.isAuthenticated ? (
+					<Button variant='secondary' onClick={auth.signOut}>
+						<LogOut />
+						log out
+					</Button>
+				) : (
+					<Button onClick={auth.signIn}>
+						<LogIn />
+						log in
+					</Button>
+				)}
+				{auth.isAuthenticated && (
+					<LinkButton variant='primary' href='/upload'>
+						<FileUp />
+						<span>upload resume</span>
+					</LinkButton>
+				)}
+			</Navbar>
+
+			<section className='py-12'>
+				{auth.isAuthenticated ? (
+					<div>
+						{!loadingResumes && resumes.length === 0 && <GridBlankState />}
+						{loadingResumes && (
+							<Loader className='m-auto size-16 animate-spin text-indigo-400' />
+						)}
+						{!loadingResumes && resumes.length > 0 && (
+							<>
+								<h2 className='mb-4 font-heading font-semibold text-2xl'>
+									resume reviews
+								</h2>
+								<ResumeGrid resumes={resumes} />
+							</>
+						)}
+					</div>
+				) : (
+					<div>hero section</div>
+				)}
+			</section>
+		</>
 	)
 }

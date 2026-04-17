@@ -1,13 +1,17 @@
-import clsx from 'clsx'
+import { cn } from '@/lib/utils'
 
 export function ScoreBadge({ score }: { score: number }) {
+	const clampedScore = Number.isFinite(score)
+		? Math.max(0, Math.min(100, score))
+		: 0
+
 	let badgeText = ''
 	let badgeColor = ''
 
-	if (score > 70) {
+	if (clampedScore > 69) {
 		badgeText = 'Excellent'
 		badgeColor = 'bg-green-300 border-green-600'
-	} else if (score > 49) {
+	} else if (clampedScore > 49) {
 		badgeText = 'Good'
 		badgeColor = 'bg-yellow-300 border-yellow-600'
 	} else {
@@ -17,8 +21,8 @@ export function ScoreBadge({ score }: { score: number }) {
 
 	return (
 		<div
-			className={clsx(
-				'inline-block rounded-lg border px-2 py-1 font-semibold text-gray-700 text-sm',
+			className={cn(
+				'inline-block rounded-lg border px-2 py-1 font-semibold text-mauve-700 text-sm',
 				badgeColor
 			)}
 		>

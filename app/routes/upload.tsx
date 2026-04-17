@@ -1,15 +1,17 @@
+import { FileSearchCorner } from 'lucide-react'
 import { type SyntheticEvent, useState } from 'react'
-import { Link, useNavigate } from 'react-router'
+import { Navigate, useNavigate } from 'react-router'
 import { useShallow } from 'zustand/shallow'
 
-import { Button } from '@/components/Button'
-import { FileUploader } from '@/components/FileUploader'
+import { Navbar } from '@/components/layout/Navbar'
+import { Button } from '@/components/ui/Button'
+import { FileUploader } from '@/components/upload/FileUploader'
 import { prepareInstructions } from '@/data/constants'
 import { usePuterStore } from '@/lib/puter'
 
 export function meta() {
 	return [
-		{ title: 'Resume Analyzer | Upload' },
+		{ title: 'resmyze | upload' },
 		{
 			name: 'description',
 			content: 'Upload your resume.',
@@ -18,12 +20,11 @@ export function meta() {
 }
 
 export default function Upload() {
-	const { ai, fs, kv } = usePuterStore(
+	const { ai, auth, fs, kv } = usePuterStore(
 		useShallow((state) => ({
 			ai: state.ai,
 			auth: state.auth,
 			fs: state.fs,
-			isLoading: state.isLoading,
 			kv: state.kv,
 		}))
 	)
@@ -31,6 +32,10 @@ export default function Upload() {
 	const [isProcessing, setIsProcessing] = useState(false)
 	const [statusText, setStatusText] = useState('')
 	const [file, setFile] = useState<File | null>(null)
+
+	if (!auth.isAuthenticated) {
+		return <Navigate to='/' replace />
+	}
 
 	const handleFileSelect = (file: File | null) => {
 		setFile(file)
@@ -51,7 +56,12 @@ export default function Upload() {
 
 		setStatusText('Uploading file...')
 		const uploadedFile = await fs.upload([file])
-		if (!uploadedFile) return setStatusText('Error: Failed to upload file')
+
+		if (!uploadedFile) {
+			setStatusText('Error: Failed to upload file')
+			setIsProcessing(false)
+			return
+		}
 
 		setStatusText('Preparing data...')
 
@@ -73,14 +83,32 @@ export default function Upload() {
 			uploadedFile.path,
 			prepareInstructions({ jobTitle, jobDescription })
 		)
-		if (!feedback) return setStatusText('Error: Failed to analyze resume')
+
+		if (!feedback) {
+			setStatusText('Error: Failed to analyze resume')
+			setIsProcessing(false)
+			return
+		}
 
 		const feedbackText =
 			typeof feedback.message.content === 'string'
 				? feedback.message.content
-				: feedback.message.content[0].text
+				: feedback.message.content?.[0]?.text
 
-		data.feedback = JSON.parse(feedbackText)
+		if (!feedbackText) {
+			setStatusText('Error: Empty response from AI')
+			setIsProcessing(false)
+			return
+		}
+
+		try {
+			data.feedback = JSON.parse(feedbackText)
+		} catch {
+			setStatusText('Error: Failed to parse AI response')
+			setIsProcessing(false)
+			return
+		}
+
 		await kv.set(`resume:${uuid}`, JSON.stringify(data))
 		setStatusText('Analysis complete. Redirecting...')
 
@@ -107,10 +135,9 @@ export default function Upload() {
 
 	return (
 		<div className='h-screen'>
-			<nav className='p-8'>
-				<Link to='/'>⬅ back to home</Link>
-			</nav>
-			<main className='flex items-center justify-center'>
+			<Navbar />
+
+			<main className='flex-center'>
 				<section>
 					<h1>{statusText}</h1>
 					{isProcessing ? (
@@ -131,7 +158,7 @@ export default function Upload() {
 									id='company-name'
 									name='company-name'
 									placeholder='Company Name'
-									className='rounded-lg border border-gray-600 p-3'
+									className='rounded-lg border border-mauve-600 p-3'
 								/>
 							</div>
 							<div className='flex flex-col gap-2'>
@@ -141,7 +168,7 @@ export default function Upload() {
 									id='job-title'
 									name='job-title'
 									placeholder='Job Title'
-									className='rounded-lg border border-gray-600 p-3'
+									className='rounded-lg border border-mauve-600 p-3'
 								/>
 							</div>
 							<div className='flex flex-col gap-2'>
@@ -151,14 +178,17 @@ export default function Upload() {
 									id='job-description'
 									name='job-description'
 									placeholder='Job Description'
-									className='rounded-lg border border-gray-600 p-3'
+									className='rounded-lg border border-mauve-600 p-3'
 								/>
 							</div>
 							<div className='flex flex-col gap-2'>
 								<label htmlFor='uploader'>Upload Resume</label>
 								<FileUploader onFileSelect={handleFileSelect} />
 							</div>
-							<Button type='submit'>Analyze Resume</Button>
+							<Button type='submit' variant='primary'>
+								<FileSearchCorner />
+								analyze resume
+							</Button>
 						</form>
 					)}
 				</section>

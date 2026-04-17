@@ -27,7 +27,7 @@ export function FileUploader({
 	return (
 		<div
 			{...getRootProps()}
-			className='w-full cursor-pointer rounded-lg border border-gray-600 p-3'
+			className='w-full cursor-pointer rounded-lg border border-mauve-600 p-3'
 		>
 			<input {...getInputProps()} />
 

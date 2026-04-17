@@ -1,16 +1,19 @@
-import { SquareArrowOutUpRight } from 'lucide-react'
+import { Loader, SquareArrowOutUpRight } from 'lucide-react'
 import { useEffect, useState } from 'react'
-import { Link, useNavigate, useParams } from 'react-router'
+import { Navigate, useParams } from 'react-router'
 import { useShallow } from 'zustand/shallow'
-import { ATS } from '@/components/ATS'
-import { Details } from '@/components/Details'
-import { Summary } from '@/components/Summary'
+
+import { Navbar } from '@/components/layout/Navbar'
+import { ATS } from '@/components/resume/ATS'
+import { Details } from '@/components/resume/Details'
+import { Summary } from '@/components/resume/Summary'
+import { LinkButton } from '@/components/ui/LinkButton'
 import type { Feedback } from '@/data/types'
 import { usePuterStore } from '@/lib/puter'
 
 export function meta() {
 	return [
-		{ title: 'Resume Analyzer | Resume' },
+		{ title: 'resmyze | resume' },
 		{
 			name: 'description',
 			content: 'Detailed overview of your resume',
@@ -19,7 +22,7 @@ export function meta() {
 }
 
 export default function Resume() {
-	const { auth, fs, isLoading, kv } = usePuterStore(
+	const { auth, fs, kv } = usePuterStore(
 		useShallow((state) => ({
 			auth: state.auth,
 			fs: state.fs,
@@ -31,51 +34,59 @@ export default function Resume() {
 	const { id } = useParams()
 	const [resumeUrl, setResumeUrl] = useState('')
 	const [feedback, setFeedback] = useState<Feedback | null>(null)
-	const navigate = useNavigate()
 
 	useEffect(() => {
-		if (!isLoading && !auth.isAuthenticated)
-			navigate(`/auth?next=/resume/${id}`)
-	}, [auth.isAuthenticated, navigate, id, isLoading])
+		let objectUrl: string | null = null
 
-	useEffect(() => {
 		const loadResume = async () => {
-			const resume = await kv.get(`resume:${id}`)
+			try {
+				const resume = await kv.get(`resume:${id}`)
 
-			if (!resume) return
+				if (!resume) return
 
-			const data = JSON.parse(resume)
+				const data = JSON.parse(resume)
+				const resumeBlob = await fs.read(data.resumePath)
 
-			const resumeBlob = await fs.read(data.resumePath)
-			if (!resumeBlob) return
+				if (!resumeBlob) return
 
-			const pdfBlob = new Blob([resumeBlob], { type: 'application/pdf' })
-			const resumeUrl = URL.createObjectURL(pdfBlob)
-			setResumeUrl(resumeUrl)
+				const pdfBlob = new Blob([resumeBlob], { type: 'application/pdf' })
+				objectUrl = URL.createObjectURL(pdfBlob)
+				setResumeUrl(objectUrl)
 
-			setFeedback(data.feedback)
+				setFeedback(data.feedback)
+			} catch (error) {
+				console.error('Failed to load resume:', error)
+			}
 		}
 
 		loadResume()
-	}, [id, fs.read, kv.get])
+
+		return () => {
+			if (objectUrl) {
+				URL.revokeObjectURL(objectUrl)
+			}
+		}
+	}, [id, fs, kv])
+
+	if (!auth.isAuthenticated) {
+		return <Navigate to='/' replace />
+	}
 
 	return (
 		<div className='h-screen'>
-			<nav className='p-8'>
-				<Link to='/'>⬅ back to home</Link>
-			</nav>
+			<Navbar>
+				{resumeUrl ? (
+					<LinkButton href={resumeUrl} variant='secondary' fileRoute>
+						<SquareArrowOutUpRight />
+						<span>view resume</span>
+					</LinkButton>
+				) : (
+					<Loader className='size-8 animate-spin text-indigo-400' />
+				)}
+			</Navbar>
 			<main>
 				<div className='flex items-center justify-between px-16'>
-					<h1 className='text-3xl'>Resume Review</h1>
-					<a
-						href={resumeUrl}
-						target='_blank'
-						rel='noopener noreferrer'
-						className='flex cursor-pointer gap-2 rounded-2xl border p-4'
-					>
-						<span>view resume</span>
-						<SquareArrowOutUpRight />
-					</a>
+					<h2 className='font-heading text-3xl'>Resume Review</h2>
 				</div>
 				{feedback && (
 					<div className='flex flex-col gap-6 px-16 py-12'>
