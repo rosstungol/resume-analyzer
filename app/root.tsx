@@ -12,8 +12,10 @@ import type { Route } from './+types/root'
 import './app.css'
 import { House } from 'lucide-react'
 import { useEffect } from 'react'
+
 import { PageWrapper } from '@/components/layout/PageWrapper'
 import { usePuterStore } from '@/lib/puter'
+import { Navbar } from './components/layout/Navbar'
 import { Button } from './components/ui/Button'
 
 export function Layout({ children }: { children: React.ReactNode }) {
@@ -64,22 +66,25 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
 	}
 
 	return (
-		<main className='container mx-auto p-4 pt-16'>
-			<div className='card card-shadow mx-auto w-fit space-y-2 p-8 text-center text-mauve-600'>
-				<div className='mb-8'>
-					<h1 className='font-heading text-2xl'>{message}</h1>
-					<p>{details}</p>
-					{stack && (
-						<pre className='w-full overflow-x-auto p-4'>
-							<code>{stack}</code>
-						</pre>
-					)}
+		<>
+			<Navbar />
+			<main className='container flex-center p-4 pt-16'>
+				<div className='card card-shadow mx-auto min-w-80 p-8 text-center'>
+					<div className='mb-6'>
+						<h1 className='font-heading text-2xl'>{message}</h1>
+						<p>{details}</p>
+						{stack && (
+							<pre className='w-full overflow-x-auto p-4'>
+								<code>{stack}</code>
+							</pre>
+						)}
+					</div>
+					<Button onClick={() => navigate('/')} className='mx-auto'>
+						<House />
+						go home
+					</Button>
 				</div>
-				<Button onClick={() => navigate('/')} className='mx-auto'>
-					<House />
-					go home
-				</Button>
-			</div>
-		</main>
+			</main>
+		</>
 	)
 }
