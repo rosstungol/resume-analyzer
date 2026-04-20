@@ -87,10 +87,10 @@ export default function Home() {
 					</LinkButton>
 				</Navbar>
 
-				<section className='py-12'>
+				<section className='my-8 lg:m-12'>
 					<div>
 						{loadingResumes && (
-							<Loader className='m-auto size-16 animate-spin text-indigo-400' />
+							<Loader className='m-auto size-16 animate-spin text-primary' />
 						)}
 
 						{!loadingResumes && resumes.length > 0 && (
@@ -112,7 +112,7 @@ export default function Home() {
 		<>
 			<Navbar>
 				{isLoading ? (
-					<Loader className='size-8 animate-spin text-indigo-400' />
+					<Loader className='size-8 animate-spin text-primary' />
 				) : (
 					<Button onClick={auth.signIn}>
 						<LogIn />

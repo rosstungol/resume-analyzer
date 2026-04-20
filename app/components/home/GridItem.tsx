@@ -20,7 +20,9 @@ export function GridItem({ href, title, subtitle, score }: GridItemProps) {
 				<ScoreCircle score={score} />
 				<div>
 					{title && <h3 className='font-heading text-xl'>{title}</h3>}
-					{subtitle && <p className='text-mauve-500 text-sm'>{subtitle}</p>}
+					{subtitle && (
+						<p className='text-muted-foreground text-sm'>{subtitle}</p>
+					)}
 				</div>
 			</Link>
 		</li>
