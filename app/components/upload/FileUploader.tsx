@@ -1,5 +1,7 @@
+import { CircleX } from 'lucide-react'
 import { useCallback } from 'react'
 import { useDropzone } from 'react-dropzone'
+
 import { formatSize } from '@/lib/utils'
 
 export function FileUploader({
@@ -25,32 +27,31 @@ export function FileUploader({
 	const file = acceptedFiles[0] || null
 
 	return (
-		<div
-			{...getRootProps()}
-			className='w-full cursor-pointer rounded-lg border border-mauve-600 p-3'
-		>
-			<input {...getInputProps()} />
+		<div {...getRootProps()} className='form-input w-full cursor-pointer'>
+			<input id='uploader' {...getInputProps()} />
 
 			<div>
 				{file ? (
-					<div className='flex items-center justify-between'>
-						<div>
-							<p className='max-w-80 truncate'>{file.name}</p>
-							<p className='text-sm'>{formatSize(file.size)}</p>
-						</div>
+					<div className='relative h-60 flex-center flex-col'>
+						<h3 className='line-clamp-2 text-balance font-heading font-semibold text-2xl'>
+							{file.name}
+						</h3>
+						<p className='text-muted-foreground text-sm'>
+							{formatSize(file.size)}
+						</p>
 						<button
 							type='button'
-							className='cursor-pointer'
+							className='absolute top-1 right-1 cursor-pointer'
 							onClick={() => onFileSelect?.(null)}
 						>
-							x
+							<CircleX />
 						</button>
 					</div>
 				) : (
-					<div className='text-center'>
-						<p>Upload</p>
+					<div className='h-60 flex-center flex-col'>
+						<h3 className='font-heading font-semibold text-2xl'>Upload</h3>
 						<p>Click to upload or drag and drop</p>
-						<p className='text-sm'>PDF (max 20mb)</p>
+						<p className='text-muted-foreground text-sm'>PDF (max 20mb)</p>
 					</div>
 				)}
 			</div>
