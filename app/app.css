@@ -49,12 +49,12 @@
 	--card-foreground: var(--foreground);
 	--popover: oklch(1 0 0);
 	--popover-foreground: oklch(0.145 0 0);
-	--primary: oklch(0.664 0.1092 20.4);
+	--primary: oklch(0.62159 0.14385 22.123);
 	--primary-foreground: oklch(0.985 0 0);
 	--secondary: oklch(100 0 0);
 	--secondary-foreground: var(--foreground);
 	--muted: oklch(0.97 0 0);
-	--muted-foreground: oklch(0.542 0.034 322.5);
+	--muted-foreground: oklch(0.435 0.029 321.78);
 	--accent: oklch(0.97 0 0);
 	--accent-foreground: var(--foreground);
 	--destructive: oklch(0.704 0.191 22.216);
