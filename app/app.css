@@ -60,7 +60,7 @@
 	--destructive: oklch(0.704 0.191 22.216);
 	--border: oklch(0.851 0.041 18);
 	--input: oklch(0.922 0 0);
-	--ring: var(--primary);
+	--ring: var(--foreground);
 	--radius: 0.625rem;
 	--shadow-card: var(--foreground);
 }

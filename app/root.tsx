@@ -68,8 +68,8 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
 	return (
 		<>
 			<Navbar />
-			<main className='container flex-center p-4 pt-16'>
-				<div className='card card-shadow mx-auto min-w-80 p-8 text-center'>
+			<main className='mx-auto flex-center pt-16 sm:m-4'>
+				<div className='card card-shadow mx-auto w-fit p-8 text-center sm:max-w-full'>
 					<div className='mb-6'>
 						<h1 className='font-heading text-2xl'>{message}</h1>
 						<p>{details}</p>

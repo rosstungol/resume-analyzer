@@ -67,14 +67,14 @@ export default function Home() {
 		}
 
 		loadResumes()
-	}, [kv, auth])
+	}, [kv, auth.isAuthenticated])
 
 	if (auth.isAuthenticated)
 		return (
 			<>
 				<Navbar>
 					{isLoading ? (
-						<Loader className='size-8 animate-spin text-indigo-400' />
+						<Loader className='size-8 animate-spin text-primary' />
 					) : (
 						<Button variant='secondary' onClick={auth.signOut}>
 							<LogOut />

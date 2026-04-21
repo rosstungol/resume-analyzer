@@ -4,8 +4,8 @@ import { LinkButton } from '../ui/LinkButton'
 
 export function GridBlankState() {
 	return (
-		<div className='flex-center p-8'>
-			<div className='card card-shadow mx-auto min-w-80 p-8 text-center'>
+		<div className='mx-auto flex-center pt-16 sm:m-4'>
+			<div className='card card-shadow mx-auto w-fit p-8 text-center sm:max-w-full'>
 				<div className='mb-6'>
 					<h2 className='font-heading font-semibold text-2xl'>
 						There's nothing here.
