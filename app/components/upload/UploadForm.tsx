@@ -1,4 +1,4 @@
-import { FileSearchCorner, ListRestart } from 'lucide-react'
+import { FileSearchCorner, FileUp, ListRestart } from 'lucide-react'
 import { type SyntheticEvent, useState } from 'react'
 import { useNavigate } from 'react-router'
 import { useShallow } from 'zustand/shallow'
@@ -18,6 +18,7 @@ export function UploadForm() {
 	)
 
 	const [isProcessing, setIsProcessing] = useState(false)
+	const [isError, setIsError] = useState(false)
 	const [statusText, setStatusText] = useState('')
 	const [file, setFile] = useState<File | null>(null)
 	const navigate = useNavigate()
@@ -44,7 +45,7 @@ export function UploadForm() {
 
 		if (!uploadedFile) {
 			setStatusText('Error: Failed to upload file')
-			setIsProcessing(false)
+			setIsError(true)
 			return
 		}
 
@@ -60,8 +61,6 @@ export function UploadForm() {
 			feedback: '',
 		}
 
-		await kv.set(`resume:${uuid}`, JSON.stringify(data))
-
 		setStatusText('Analyzing...')
 
 		const feedback = await ai.feedback(
@@ -71,7 +70,7 @@ export function UploadForm() {
 
 		if (!feedback) {
 			setStatusText('Error: Failed to analyze resume')
-			setIsProcessing(false)
+			setIsError(true)
 			return
 		}
 
@@ -82,15 +81,20 @@ export function UploadForm() {
 
 		if (!feedbackText) {
 			setStatusText('Error: Empty response from AI')
-			setIsProcessing(false)
+			setIsError(true)
 			return
 		}
 
 		try {
-			data.feedback = JSON.parse(feedbackText)
-		} catch {
+			const cleanedText = feedbackText
+				.trim()
+				.replace(/^```(?:json)?\s*/i, '')
+				.replace(/\s*```$/, '')
+			data.feedback = JSON.parse(cleanedText)
+		} catch (err) {
+			console.error('Failed to parse AI feedback:', err, feedbackText)
 			setStatusText('Error: Failed to parse AI response')
-			setIsProcessing(false)
+			setIsError(true)
 			return
 		}
 
@@ -100,14 +104,10 @@ export function UploadForm() {
 		navigate(`/resume/${uuid}`)
 	}
 
-	const handleSubmit = (e: SyntheticEvent) => {
+	const handleSubmit = (e: SyntheticEvent<HTMLFormElement>) => {
 		e.preventDefault()
 
-		const form = e.currentTarget.closest('form')
-
-		if (!form) return
-
-		const formData = new FormData(form)
+		const formData = new FormData(e.currentTarget)
 
 		const companyName = formData.get('company-name') as string
 		const jobTitle = formData.get('job-title') as string
@@ -122,7 +122,21 @@ export function UploadForm() {
 		return (
 			<div className='card card-shadow mx-auto w-fit min-w-80 space-y-4 p-8 text-center'>
 				<h2 className='font-heading font-semibold text-2xl'>{statusText}</h2>
-				<FileSearchCorner className='m-auto size-16 animate-pulse text-primary' />
+				{!isError ? (
+					<FileSearchCorner className='m-auto size-16 animate-pulse text-primary' />
+				) : (
+					<Button
+						onClick={() => {
+							setStatusText('')
+							setIsError(false)
+							setIsProcessing(false)
+						}}
+						className='mx-auto'
+					>
+						<FileUp />
+						<span>retry upload</span>
+					</Button>
+				)}
 			</div>
 		)
 
@@ -152,6 +166,7 @@ export function UploadForm() {
 								name='company-name'
 								placeholder='Company Name'
 								className='form-input'
+								required
 							/>
 						</div>
 						<div className='flex flex-col gap-2'>
@@ -164,6 +179,7 @@ export function UploadForm() {
 								name='job-title'
 								placeholder='Job Title'
 								className='form-input'
+								required
 							/>
 						</div>
 						<div className='flex flex-col gap-2'>
@@ -179,6 +195,7 @@ export function UploadForm() {
 								name='job-description'
 								placeholder='Job Description'
 								className='form-input flex-1 resize-none'
+								required
 							/>
 						</div>
 					</div>
@@ -187,10 +204,17 @@ export function UploadForm() {
 							<label htmlFor='uploader' className='font-heading font-semibold'>
 								Upload Resume
 							</label>
-							<FileUploader onFileSelect={handleFileSelect} />
+							<FileUploader
+								selectedFile={file}
+								onFileSelect={handleFileSelect}
+							/>
 						</div>
 						<div className='flex flex-row gap-3'>
-							<Button type='reset' variant='secondary'>
+							<Button
+								type='reset'
+								variant='secondary'
+								onClick={() => handleFileSelect(null)}
+							>
 								<ListRestart />
 								<span className='hidden sm:inline'>reset</span>
 							</Button>
