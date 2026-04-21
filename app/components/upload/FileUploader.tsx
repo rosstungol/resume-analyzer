@@ -4,13 +4,17 @@ import { useDropzone } from 'react-dropzone'
 
 import { formatSize } from '@/lib/utils'
 
-export function FileUploader({
-	selectedFile,
-	onFileSelect,
-}: {
+type FileUploaderProps = {
+	inputId: string
 	selectedFile: File | null
 	onFileSelect: (file: File | null) => void
-}) {
+}
+
+export function FileUploader({
+	inputId,
+	selectedFile,
+	onFileSelect,
+}: FileUploaderProps) {
 	const onDrop = useCallback(
 		(acceptedFiles: File[]) => {
 			const file = acceptedFiles[0] || null
@@ -28,7 +32,7 @@ export function FileUploader({
 
 	return (
 		<div {...getRootProps()}>
-			<input {...getInputProps()} />
+			<input {...getInputProps()} id={inputId} />
 
 			<div className='form-input w-full cursor-pointer'>
 				{selectedFile ? (
@@ -41,6 +45,7 @@ export function FileUploader({
 						</p>
 						<button
 							type='button'
+							aria-label='Remove selected file'
 							className='absolute top-1 right-1 cursor-pointer'
 							onClick={(e) => {
 								e.stopPropagation()
@@ -48,7 +53,7 @@ export function FileUploader({
 								onFileSelect?.(null)
 							}}
 						>
-							<CircleX />
+							<CircleX aria-hidden='true' />
 						</button>
 					</div>
 				) : (

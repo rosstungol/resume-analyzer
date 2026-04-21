@@ -98,7 +98,13 @@ export function UploadForm() {
 			return
 		}
 
-		await kv.set(`resume:${uuid}`, JSON.stringify(data))
+		const savedData = await kv.set(`resume:${uuid}`, JSON.stringify(data))
+
+		if (!savedData) {
+			setStatusText('Error: Failed to save analysis')
+			setIsError(true)
+			return
+		}
 
 		setStatusText('Analysis complete. Redirecting...')
 		navigate(`/resume/${uuid}`)
@@ -205,6 +211,7 @@ export function UploadForm() {
 								Upload Resume
 							</label>
 							<FileUploader
+								inputId='uploader'
 								selectedFile={file}
 								onFileSelect={handleFileSelect}
 							/>
@@ -218,7 +225,12 @@ export function UploadForm() {
 								<ListRestart />
 								<span className='hidden sm:inline'>reset</span>
 							</Button>
-							<Button type='submit' variant='primary' className='flex-1'>
+							<Button
+								type='submit'
+								variant='primary'
+								className='flex-1'
+								disabled={isProcessing}
+							>
 								<FileSearchCorner />
 								<span>analyze resume</span>
 							</Button>
