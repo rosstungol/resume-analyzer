@@ -55,9 +55,11 @@ export default function Home() {
 						return []
 					}
 				})
+
 				setResumes(parsedResumes)
 			} catch (error) {
 				console.error('Failed to load resumes:', error)
+
 				setResumes([])
 			} finally {
 				setLoadingResumes(false)
@@ -67,37 +69,30 @@ export default function Home() {
 		loadResumes()
 	}, [kv, auth.isAuthenticated])
 
-	return (
-		<>
-			<Navbar>
-				{isLoading ? (
-					<Loader className='size-8 animate-spin text-indigo-400' />
-				) : auth.isAuthenticated ? (
-					<Button variant='secondary' onClick={auth.signOut}>
-						<LogOut />
-						log out
-					</Button>
-				) : (
-					<Button onClick={auth.signIn}>
-						<LogIn />
-						log in
-					</Button>
-				)}
-				{auth.isAuthenticated && (
+	if (auth.isAuthenticated)
+		return (
+			<>
+				<Navbar>
+					{isLoading ? (
+						<Loader className='size-8 animate-spin text-primary' />
+					) : (
+						<Button variant='secondary' onClick={auth.signOut}>
+							<LogOut />
+							log out
+						</Button>
+					)}
 					<LinkButton variant='primary' href='/upload'>
 						<FileUp />
 						<span>upload resume</span>
 					</LinkButton>
-				)}
-			</Navbar>
+				</Navbar>
 
-			<section className='py-12'>
-				{auth.isAuthenticated ? (
+				<section className='my-8 lg:m-12'>
 					<div>
-						{!loadingResumes && resumes.length === 0 && <GridBlankState />}
 						{loadingResumes && (
-							<Loader className='m-auto size-16 animate-spin text-indigo-400' />
+							<Loader className='m-auto size-16 animate-spin text-primary' />
 						)}
+
 						{!loadingResumes && resumes.length > 0 && (
 							<>
 								<h2 className='mb-4 font-heading font-semibold text-2xl'>
@@ -106,10 +101,28 @@ export default function Home() {
 								<ResumeGrid resumes={resumes} />
 							</>
 						)}
+
+						{!loadingResumes && resumes.length === 0 && <GridBlankState />}
 					</div>
+				</section>
+			</>
+		)
+
+	return (
+		<>
+			<Navbar>
+				{isLoading ? (
+					<Loader className='size-8 animate-spin text-primary' />
 				) : (
-					<div>hero section</div>
+					<Button onClick={auth.signIn}>
+						<LogIn />
+						log in
+					</Button>
 				)}
+			</Navbar>
+
+			<section className='py-12'>
+				{!isLoading && <div>hero section</div>}
 			</section>
 		</>
 	)

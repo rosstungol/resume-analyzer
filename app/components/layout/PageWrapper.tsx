@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react'
+
 import { DotGrid } from './DotGrid'
 
 export function PageWrapper({ children }: { children: ReactNode }) {
@@ -12,7 +13,7 @@ export function PageWrapper({ children }: { children: ReactNode }) {
 					dotSize={2}
 					gap={16}
 					baseColor='#d7d0d7'
-					activeColor='#7c86ff'
+					activeColor='#ce7777'
 					proximity={120}
 					shockRadius={250}
 					shockStrength={5}
@@ -20,7 +21,7 @@ export function PageWrapper({ children }: { children: ReactNode }) {
 					returnDuration={1.5}
 				/>
 			</div>
-			<div className='container relative z-20 m-auto py-5'>{children}</div>
+			<div className='container relative z-20 m-auto px-4 py-5'>{children}</div>
 		</div>
 	)
 }

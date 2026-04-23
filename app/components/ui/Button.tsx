@@ -11,13 +11,13 @@ type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
 }
 
 const baseStyles =
-	'flex gap-2 rounded-lg border-2 border-mauve-300 p-4 transition-all font-heading font-semibold cursor-pointer'
+	'flex justify-center gap-2 rounded-lg border-2 p-4 transition-all font-heading font-semibold cursor-pointer'
 const hoverStyles = 'hover:-translate-y-0.5 hover:card-shadow'
 const disabledStyles = 'disabled:cursor-not-allowed disabled:opacity-50'
 
 const variantStyles: Record<ButtonVariant, string> = {
-	primary: 'bg-indigo-400 text-white',
-	secondary: 'bg-white text-mauve-800',
+	primary: 'bg-primary text-primary-foreground',
+	secondary: 'bg-secondary text-secondary-foreground',
 	destructive: 'bg-rose-400 text-white',
 }
 

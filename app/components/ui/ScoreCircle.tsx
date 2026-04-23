@@ -22,14 +22,14 @@ export function ScoreCircle({ score = 75 }: { score: number }) {
 					cx='50'
 					cy='50'
 					r={normalizedRadius}
-					stroke='#e5e7eb'
+					stroke='#f3f1f3'
 					strokeWidth={stroke}
 					fill='transparent'
 				/>
 				<defs>
 					<linearGradient id='grad' x1='1' y1='0' x2='0' y2='1'>
-						<stop offset='0%' stopColor='#FF97AD' />
-						<stop offset='100%' stopColor='#5171FF' />
+						<stop offset='0%' stopColor='#f2e5e5' />
+						<stop offset='100%' stopColor='#ce7777' />
 					</linearGradient>
 				</defs>
 				<circle
@@ -48,7 +48,7 @@ export function ScoreCircle({ score = 75 }: { score: number }) {
 			<div className='absolute inset-0 flex-center flex-col'>
 				<div className='flex flex-col items-center font-heading'>
 					<p className='font-semibold text-3xl'>{clampedScore}</p>
-					<p className='text-mauve-400 text-xs'>/ 100</p>
+					<p className='text-muted-foreground text-xs'>/ 100</p>
 				</div>
 			</div>
 		</div>
