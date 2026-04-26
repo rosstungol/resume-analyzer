@@ -54,13 +54,13 @@
 	--secondary: oklch(1 0 0);
 	--secondary-foreground: var(--foreground);
 	--muted: oklch(0.97 0 0);
-	--muted-foreground: oklch(0.435 0.029 321.78);
+	--muted-foreground: oklch(0.542 0.034 322.5);
 	--accent: oklch(0.97 0 0);
 	--accent-foreground: var(--foreground);
 	--destructive: oklch(0.704 0.191 22.216);
-	--border: oklch(0.851 0.041 18);
+	--border: oklch(0.865 0.012 325.68);
 	--input: oklch(0.922 0 0);
-	--ring: var(--foreground);
+	--ring: var(--primary);
 	--radius: 0.625rem;
 	--shadow-card: var(--foreground);
 }
@@ -112,5 +112,5 @@
 }
 
 @utility form-input {
-	@apply rounded-lg border-2 p-3;
+	@apply rounded-lg border-2 p-3 hover:border-ring transition-colors;
 }

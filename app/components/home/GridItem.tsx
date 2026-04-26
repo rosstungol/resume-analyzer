@@ -11,7 +11,7 @@ type GridItemProps = {
 
 export function GridItem({ href, title, subtitle, score }: GridItemProps) {
 	return (
-		<li className='card card-shadow transition-all'>
+		<li className='card card-shadow transition-all hover:border-ring'>
 			<Link
 				to={href}
 				className='flex cursor-pointer items-center gap-2 p-4'
