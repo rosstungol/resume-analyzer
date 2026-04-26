@@ -1,3 +1,9 @@
+import type * as z from 'zod'
+
+import type { uploadFormSchema } from '../schemas'
+
+export type UploadFormData = z.infer<typeof uploadFormSchema>
+
 export type Resume = {
 	id: string
 	companyName?: string

@@ -4,7 +4,11 @@ import { useNavigate } from 'react-router'
 import { useShallow } from 'zustand/shallow'
 
 import { prepareInstructions } from '@/data/constants'
+import { uploadFormSchema } from '@/data/schemas'
+import type { UploadFormData } from '@/data/types'
+import type { AIResponse } from '@/data/types/puter'
 import { usePuterStore } from '@/lib/puter'
+import { cn } from '@/lib/utils'
 import { Button } from '../ui/Button'
 import { FileUploader } from './FileUploader'
 
@@ -17,14 +21,40 @@ export function UploadForm() {
 		}))
 	)
 
-	const [isProcessing, setIsProcessing] = useState(false)
-	const [isError, setIsError] = useState(false)
-	const [statusText, setStatusText] = useState('')
-	const [file, setFile] = useState<File | null>(null)
+	const [formData, setFormData] = useState<UploadFormData>({
+		companyName: '',
+		jobTitle: '',
+		jobDescription: '',
+		file: null,
+	})
+
+	const [statusText, setStatusText] = useState<string>('')
+	const [isProcessing, setIsProcessing] = useState<boolean>(false)
+	const [isProcessingError, setIsProcessingError] = useState<boolean>(false)
+	const [formErrors, setFormErrors] = useState<Record<string, string>>({})
 	const navigate = useNavigate()
 
+	const handleChange = (
+		e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+	) => {
+		setFormData((prev) => ({
+			...prev,
+			[e.target.name]: e.target.value,
+		}))
+
+		setFormErrors((prev) => ({
+			...prev,
+			[e.target.name]: '',
+		}))
+	}
+
 	const handleFileSelect = (file: File | null) => {
-		setFile(file)
+		setFormData((prev) => ({
+			...prev,
+			file: file,
+		}))
+
+		setFormErrors((prev) => ({ ...prev, file: '' }))
 	}
 
 	const handleAnalyze = async ({
@@ -45,7 +75,7 @@ export function UploadForm() {
 
 		if (!uploadedFile) {
 			setStatusText('Error: Failed to upload file')
-			setIsError(true)
+			setIsProcessingError(true)
 			return
 		}
 
@@ -63,14 +93,20 @@ export function UploadForm() {
 
 		setStatusText('Analyzing...')
 
-		const feedback = await ai.feedback(
-			uploadedFile.path,
-			prepareInstructions({ jobTitle, jobDescription })
-		)
+		let feedback: AIResponse | undefined
+
+		try {
+			feedback = await ai.feedback(
+				uploadedFile.path,
+				prepareInstructions({ jobTitle, jobDescription })
+			)
+		} catch (err) {
+			console.error('Failed to analyze resume:', err)
+		}
 
 		if (!feedback) {
 			setStatusText('Error: Failed to analyze resume')
-			setIsError(true)
+			setIsProcessingError(true)
 			return
 		}
 
@@ -81,7 +117,7 @@ export function UploadForm() {
 
 		if (!feedbackText) {
 			setStatusText('Error: Empty response from AI')
-			setIsError(true)
+			setIsProcessingError(true)
 			return
 		}
 
@@ -94,7 +130,7 @@ export function UploadForm() {
 		} catch (err) {
 			console.error('Failed to parse AI feedback:', err, feedbackText)
 			setStatusText('Error: Failed to parse AI response')
-			setIsError(true)
+			setIsProcessingError(true)
 			return
 		}
 
@@ -102,7 +138,7 @@ export function UploadForm() {
 
 		if (!savedData) {
 			setStatusText('Error: Failed to save analysis')
-			setIsError(true)
+			setIsProcessingError(true)
 			return
 		}
 
@@ -113,29 +149,47 @@ export function UploadForm() {
 	const handleSubmit = (e: SyntheticEvent<HTMLFormElement>) => {
 		e.preventDefault()
 
-		const formData = new FormData(e.currentTarget)
+		const validatedData = uploadFormSchema.safeParse(formData)
 
-		const companyName = formData.get('company-name') as string
-		const jobTitle = formData.get('job-title') as string
-		const jobDescription = formData.get('job-description') as string
+		if (!validatedData.success) {
+			validatedData.error.issues.map((err) => {
+				const field = err.path[0] as string
 
-		if (!file) return
+				return setFormErrors((prev) => ({ ...prev, [field]: err.message }))
+			})
+		}
 
-		handleAnalyze({ companyName, jobTitle, jobDescription, file })
+		if (!formData.file)
+			return setFormErrors((prev) => ({
+				...prev,
+				file: 'Resume PDF file is required',
+			}))
+
+		const { companyName, jobTitle, jobDescription, file } = formData
+
+		if (validatedData.success)
+			handleAnalyze({ companyName, jobTitle, jobDescription, file })
 	}
 
 	if (isProcessing)
 		return (
 			<div className='card card-shadow mx-auto w-fit min-w-80 space-y-4 p-8 text-center'>
 				<h2 className='font-heading font-semibold text-2xl'>{statusText}</h2>
-				{!isError ? (
+				{!isProcessingError ? (
 					<FileSearchCorner className='m-auto size-16 animate-pulse text-primary' />
 				) : (
 					<Button
 						onClick={() => {
+							setFormData({
+								companyName: '',
+								jobTitle: '',
+								jobDescription: '',
+								file: null,
+							})
 							setStatusText('')
-							setIsError(false)
+							setIsProcessingError(false)
 							setIsProcessing(false)
+							setFormErrors({})
 						}}
 						className='mx-auto'
 					>
@@ -152,75 +206,125 @@ export function UploadForm() {
 				upload your resume
 			</h2>
 
-			<div className='card card-shadow p-6 lg:p-8'>
+			<div className='card card-shadow p-6 lg:p-10'>
 				<form
 					id='upload-form'
 					onSubmit={handleSubmit}
 					className='flex flex-col gap-8 md:flex-row lg:gap-12'
 				>
-					<div className='flex-1 space-y-8'>
-						<div className='flex flex-col gap-2'>
+					<div className='flex-1'>
+						<div
+							className={cn(
+								'flex flex-col gap-2',
+								formErrors.companyName ? 'mb-4' : 'mb-11'
+							)}
+						>
 							<label
-								htmlFor='company-name'
-								className='font-heading font-semibold'
+								htmlFor='companyName'
+								className='font-semibold text-muted-foreground text-sm'
 							>
 								Company Name
 							</label>
 							<input
 								type='text'
-								id='company-name'
-								name='company-name'
-								placeholder='Company Name'
+								id='companyName'
+								name='companyName'
+								placeholder='XYZ Company'
+								value={formData.companyName}
+								onChange={handleChange}
 								className='form-input'
-								required
 							/>
+							{formErrors.companyName && (
+								<p className='text-destructive text-sm'>
+									{formErrors.companyName}
+								</p>
+							)}
 						</div>
-						<div className='flex flex-col gap-2'>
-							<label htmlFor='job-title' className='font-heading font-semibold'>
+						<div
+							className={cn(
+								'flex flex-col gap-2',
+								formErrors.jobTitle ? 'mb-4' : 'mb-11'
+							)}
+						>
+							<label
+								htmlFor='jobTitle'
+								className='font-semibold text-muted-foreground text-sm'
+							>
 								Job Title
 							</label>
 							<input
 								type='text'
-								id='job-title'
-								name='job-title'
-								placeholder='Job Title'
+								id='jobTitle'
+								name='jobTitle'
+								placeholder='Project Manager'
+								value={formData.jobTitle}
+								onChange={handleChange}
 								className='form-input'
-								required
 							/>
+							{formErrors.jobTitle && (
+								<p className='text-destructive text-sm'>
+									{formErrors.jobTitle}
+								</p>
+							)}
 						</div>
 						<div className='flex flex-col gap-2'>
 							<label
-								htmlFor='job-description'
-								className='font-heading font-semibold'
+								htmlFor='jobDescription'
+								className='font-semibold text-muted-foreground text-sm'
 							>
 								Job Description
 							</label>
 							<textarea
 								rows={4}
-								id='job-description'
-								name='job-description'
-								placeholder='Job Description'
+								id='jobDescription'
+								name='jobDescription'
+								placeholder='Job summary, responsibilities, requirements'
+								value={formData.jobDescription}
+								onChange={handleChange}
 								className='form-input flex-1 resize-none'
-								required
 							/>
+							{formErrors.jobDescription && (
+								<p className='text-destructive text-sm'>
+									{formErrors.jobDescription}
+								</p>
+							)}
 						</div>
 					</div>
 					<div className='flex flex-1 flex-col justify-between gap-4'>
 						<div className='flex flex-col gap-2'>
-							<label htmlFor='uploader' className='font-heading font-semibold'>
+							<label
+								htmlFor='uploader'
+								className='font-semibold text-muted-foreground text-sm'
+							>
 								Upload Resume
 							</label>
 							<FileUploader
 								inputId='uploader'
-								selectedFile={file}
+								file={formData.file}
 								onFileSelect={handleFileSelect}
 							/>
+							{formErrors.file && (
+								<p className='text-destructive text-sm'>{formErrors.file}</p>
+							)}
 						</div>
-						<div className='flex flex-row gap-3'>
+						<div
+							className={cn(
+								'flex flex-row gap-3',
+								formErrors.jobDescription && 'md:mb-7'
+							)}
+						>
 							<Button
 								type='reset'
 								variant='secondary'
-								onClick={() => handleFileSelect(null)}
+								onClick={() => {
+									setFormData({
+										companyName: '',
+										jobTitle: '',
+										jobDescription: '',
+										file: null,
+									})
+									setFormErrors({})
+								}}
 							>
 								<ListRestart />
 								<span className='hidden sm:inline'>reset</span>

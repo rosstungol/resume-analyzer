@@ -6,13 +6,13 @@ import { formatSize } from '@/lib/utils'
 
 type FileUploaderProps = {
 	inputId: string
-	selectedFile: File | null
+	file: File | null
 	onFileSelect: (file: File | null) => void
 }
 
 export function FileUploader({
 	inputId,
-	selectedFile,
+	file,
 	onFileSelect,
 }: FileUploaderProps) {
 	const onDrop = useCallback(
@@ -35,13 +35,13 @@ export function FileUploader({
 			<input {...getInputProps()} id={inputId} />
 
 			<div className='form-input w-full cursor-pointer'>
-				{selectedFile ? (
-					<div className='relative h-60 flex-center flex-col'>
+				{file ? (
+					<div className='relative h-48 flex-center flex-col'>
 						<h3 className='line-clamp-2 text-balance font-heading font-semibold text-2xl'>
-							{selectedFile.name}
+							{file.name}
 						</h3>
 						<p className='text-muted-foreground text-sm'>
-							{formatSize(selectedFile.size)}
+							{formatSize(file.size)}
 						</p>
 						<button
 							type='button'
@@ -57,7 +57,7 @@ export function FileUploader({
 						</button>
 					</div>
 				) : (
-					<div className='h-60 flex-center flex-col'>
+					<div className='h-48 flex-center flex-col'>
 						<h3 className='font-heading font-semibold text-2xl'>Upload</h3>
 						<p>Click to upload or drag and drop</p>
 						<p className='text-muted-foreground text-sm'>PDF (max 20 MB)</p>
