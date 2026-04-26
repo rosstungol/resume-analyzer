@@ -7,6 +7,6 @@ export const uploadFormSchema = z.object({
 	file: z
 		.file()
 		.max(20 * 1024 * 1024, 'Max file size is 20 MB')
-		.mime('application/pdf', 'Only PDF format is supported.')
+		.mime('application/pdf', 'Only PDF format is supported')
 		.nullable(),
 })

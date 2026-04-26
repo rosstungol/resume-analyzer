@@ -12,6 +12,13 @@ import { cn } from '@/lib/utils'
 import { Button } from '../ui/Button'
 import { FileUploader } from './FileUploader'
 
+const INITIAL_FORM_DATA: UploadFormData = {
+	companyName: '',
+	jobTitle: '',
+	jobDescription: '',
+	file: null,
+}
+
 export function UploadForm() {
 	const { ai, fs, kv } = usePuterStore(
 		useShallow((state) => ({
@@ -21,12 +28,7 @@ export function UploadForm() {
 		}))
 	)
 
-	const [formData, setFormData] = useState<UploadFormData>({
-		companyName: '',
-		jobTitle: '',
-		jobDescription: '',
-		file: null,
-	})
+	const [formData, setFormData] = useState<UploadFormData>(INITIAL_FORM_DATA)
 
 	const [statusText, setStatusText] = useState<string>('')
 	const [isProcessing, setIsProcessing] = useState<boolean>(false)
@@ -149,13 +151,15 @@ export function UploadForm() {
 	const handleSubmit = (e: SyntheticEvent<HTMLFormElement>) => {
 		e.preventDefault()
 
-		const validatedData = uploadFormSchema.safeParse(formData)
+		setFormErrors({})
 
-		if (!validatedData.success) {
-			validatedData.error.issues.map((err) => {
+		const dataValidation = uploadFormSchema.safeParse(formData)
+
+		if (!dataValidation.success) {
+			dataValidation.error.issues.forEach((err) => {
 				const field = err.path[0] as string
 
-				return setFormErrors((prev) => ({ ...prev, [field]: err.message }))
+				setFormErrors((prev) => ({ ...prev, [field]: err.message }))
 			})
 		}
 
@@ -167,7 +171,7 @@ export function UploadForm() {
 
 		const { companyName, jobTitle, jobDescription, file } = formData
 
-		if (validatedData.success)
+		if (dataValidation.success)
 			handleAnalyze({ companyName, jobTitle, jobDescription, file })
 	}
 
@@ -180,12 +184,7 @@ export function UploadForm() {
 				) : (
 					<Button
 						onClick={() => {
-							setFormData({
-								companyName: '',
-								jobTitle: '',
-								jobDescription: '',
-								file: null,
-							})
+							setFormData(INITIAL_FORM_DATA)
 							setStatusText('')
 							setIsProcessingError(false)
 							setIsProcessing(false)
@@ -317,12 +316,7 @@ export function UploadForm() {
 								type='reset'
 								variant='secondary'
 								onClick={() => {
-									setFormData({
-										companyName: '',
-										jobTitle: '',
-										jobDescription: '',
-										file: null,
-									})
+									setFormData(INITIAL_FORM_DATA)
 									setFormErrors({})
 								}}
 							>
