@@ -1,3 +1,4 @@
+import { ArrowUpRight } from 'lucide-react'
 import { Link } from 'react-router'
 
 import { ScoreCircle } from '../ui/ScoreCircle'
@@ -11,7 +12,7 @@ type GridItemProps = {
 
 export function GridItem({ href, title, subtitle, score }: GridItemProps) {
 	return (
-		<div className='card card-shadow overflow-hidden transition-all hover:border-ring'>
+		<li className='card card-shadow overflow-hidden transition-all hover:border-ring'>
 			<Link
 				to={href}
 				className='flex cursor-pointer items-center gap-2 p-4'
@@ -32,7 +33,8 @@ export function GridItem({ href, title, subtitle, score }: GridItemProps) {
 						</p>
 					)}
 				</div>
+				<ArrowUpRight className='ml-auto size-8 self-start text-muted-foreground' />
 			</Link>
-		</div>
+		</li>
 	)
 }
