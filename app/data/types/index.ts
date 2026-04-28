@@ -4,13 +4,19 @@ import type { uploadFormSchema } from '../schemas'
 
 export type UploadFormData = z.infer<typeof uploadFormSchema>
 
+export type ResumeFeedbackData = Pick<
+	Resume,
+	'jobTitle' | 'companyName' | 'feedback'
+> & {
+	fileUrl: string | null
+}
+
 export type Resume = {
 	id: string
-	companyName?: string
-	jobTitle?: string
-	imagePath: string
+	companyName: string
+	jobTitle: string
 	resumePath: string
-	feedback: Feedback
+	feedback: Feedback | null
 }
 
 export type Feedback = {

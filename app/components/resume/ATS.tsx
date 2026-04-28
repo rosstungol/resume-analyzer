@@ -1,7 +1,5 @@
 import { BadgeAlert, BadgeCheck, BadgeX } from 'lucide-react'
 
-import { cn } from '@/lib/utils'
-
 type Suggestion = {
 	type: 'good' | 'improve'
 	tip: string
@@ -13,35 +11,40 @@ type ATSProps = {
 }
 
 export function ATS({ score, suggestions }: ATSProps) {
-	const bgClass =
-		score > 69 ? 'bg-green-100' : score > 49 ? 'bg-yellow-100' : 'bg-red-100'
-
+	const normalizedScore = Math.max(0, Math.min(100, Math.round(score)))
 	const iconSrc =
-		score > 69 ? <BadgeCheck /> : score > 49 ? <BadgeAlert /> : <BadgeX />
+		normalizedScore > 69 ? (
+			<BadgeCheck aria-hidden='true' className='size-10 text-green-500' />
+		) : normalizedScore > 49 ? (
+			<BadgeAlert aria-hidden='true' className='size-10 text-yellow-500' />
+		) : (
+			<BadgeX aria-hidden='true' className='size-10 text-red-400' />
+		)
 
 	const subtitle =
-		score > 69 ? 'Great Job!' : score > 49 ? 'Good Start' : 'Needs Improvement'
+		normalizedScore > 69
+			? 'Great Job!'
+			: normalizedScore > 49
+				? 'Good Start'
+				: 'Needs Improvement'
 
 	return (
-		<div
-			className={cn(
-				'w-full rounded-lg border border-mauve-600 p-6 shadow-md',
-				bgClass
-			)}
-		>
+		<div className='card card-shadow p-8'>
 			<div className='mb-6 flex items-center gap-4'>
 				{iconSrc}
 				<div>
-					<h2 className='flex items-center gap-2'>
-						<span className='font-semibold text-2xl'>ATS Score - {score}</span>
-						<span className='text-mauve-400 text-sm'>/ 100</span>
+					<h2 className='flex items-center gap-1'>
+						<span className='font-semibold text-2xl'>
+							ATS Score - {normalizedScore}
+						</span>
+						<span className='text-muted-foreground text-xs'>/ 100</span>
 					</h2>
 				</div>
 			</div>
 
 			<div className='mb-6'>
 				<h3 className='mb-2 font-semibold text-xl'>{subtitle}</h3>
-				<p className='mb-4 text-mauve-600'>
+				<p className='mb-4'>
 					This score represents how well your resume is likely to perform in
 					Applicant Tracking Systems used by employers.
 				</p>
@@ -49,23 +52,19 @@ export function ATS({ score, suggestions }: ATSProps) {
 				<div className='space-y-3'>
 					{suggestions.map((suggestion) => (
 						<div key={suggestion.tip} className='flex items-start gap-3'>
-							{suggestion.type === 'good' ? <BadgeCheck /> : <BadgeAlert />}
+							{suggestion.type === 'good' ? (
+								<BadgeCheck className='text-green-500' />
+							) : (
+								<BadgeAlert className='text-yellow-500' />
+							)}
 
-							<p
-								className={
-									suggestion.type === 'good'
-										? 'text-green-700'
-										: 'text-amber-700'
-								}
-							>
-								{suggestion.tip}
-							</p>
+							<p>{suggestion.tip}</p>
 						</div>
 					))}
 				</div>
 			</div>
 
-			<p className='text-mauve-700 italic'>
+			<p className='text-sm'>
 				Keep refining your resume to improve your chances of getting past ATS
 				filters and into the hands of recruiters.
 			</p>

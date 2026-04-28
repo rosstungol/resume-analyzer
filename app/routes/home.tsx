@@ -22,7 +22,7 @@ export function meta() {
 	]
 }
 
-export default function Home() {
+export default function HomePage() {
 	const { auth, isLoading, kv } = usePuterStore(
 		useShallow((state) => ({
 			auth: state.auth,
