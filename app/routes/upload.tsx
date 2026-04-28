@@ -17,7 +17,7 @@ export function meta() {
 	]
 }
 
-export default function Upload() {
+export default function UploadPage() {
 	const { auth, isLoading } = usePuterStore(
 		useShallow((state) => ({
 			auth: state.auth,
