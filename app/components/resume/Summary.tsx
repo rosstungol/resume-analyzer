@@ -4,31 +4,59 @@ import { ScoreCircle } from '../ui/ScoreCircle'
 
 function Category({ title, score }: { title: string; score: number }) {
 	return (
-		<div className='flex items-center justify-between'>
-			<div className='flex items-center gap-2'>
-				<p className='mr-5'>{title}</p>
-				<ScoreBadge score={score} />
+		<div>
+			<div className='flex justify-between'>
+				<div>
+					<h3 className='font-semibold text-lg'>{title}</h3>
+					<ScoreBadge score={score} />
+				</div>
+				<p className='flex items-center gap-1'>
+					<span className='font-semibold text-2xl'>{score}</span>
+					<span className='text-muted-foreground text-xs'>/ 100</span>
+				</p>
 			</div>
-
-			<p className='flex items-center gap-2'>
-				<span className='font-semibold text-xl'>{score}</span>
-				<span className='text-mauve-400 text-xs'>/ 100</span>
-			</p>
 		</div>
 	)
 }
 
-export function Summary({ feedback }: { feedback: Feedback }) {
+export function Summary({
+	jobTitle,
+	companyName,
+	feedback,
+}: {
+	jobTitle: string
+	companyName: string
+	feedback: Feedback
+}) {
 	return (
-		<div className='flex flex-col gap-6 rounded-lg border border-mauve-600 p-6 shadow-md'>
-			<div className='flex items-center justify-between'>
-				<h2 className='text-2xl'>Overall Score</h2>
-				<ScoreCircle score={feedback.overallScore} />
+		<div className='grid grid-cols-1 gap-8 md:grid-cols-2'>
+			<div className='card card-shadow flex-center flex-col p-8'>
+				<ScoreCircle score={feedback.overallScore} size='lg' />
+				<h3 className='line-clamp-2 font-heading font-semibold text-2xl'>
+					{jobTitle}
+				</h3>
+				<p className='line-clamp-2 text-muted-foreground'>{companyName}</p>
 			</div>
-			<Category title='Tone and Style' score={feedback.toneAndStyle.score} />
-			<Category title='Content' score={feedback.content.score} />
-			<Category title='Structure' score={feedback.structure.score} />
-			<Category title='Skills' score={feedback.skills.score} />
+			<div className='card card-shadow p-8'>
+				<ul className='space-y-4'>
+					<li>
+						<Category
+							title='Tone and Style'
+							score={feedback.toneAndStyle.score}
+						/>
+					</li>
+
+					<li>
+						<Category title='Content' score={feedback.content.score} />
+					</li>
+					<li>
+						<Category title='Structure' score={feedback.structure.score} />
+					</li>
+					<li>
+						<Category title='Skills' score={feedback.skills.score} />
+					</li>
+				</ul>
+			</div>
 		</div>
 	)
 }

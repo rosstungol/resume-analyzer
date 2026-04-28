@@ -22,7 +22,7 @@ export function meta() {
 }
 
 export default function Resume() {
-	const { auth, fs, kv } = usePuterStore(
+	const { auth, fs, isLoading, kv } = usePuterStore(
 		useShallow((state) => ({
 			auth: state.auth,
 			fs: state.fs,
@@ -31,13 +31,15 @@ export default function Resume() {
 		}))
 	)
 
-	const { id } = useParams()
-	const [resumeUrl, setResumeUrl] = useState('')
+	const [resumeData, setResumeData] = useState({
+		fileUrl: '',
+		companyName: '',
+		jobTitle: '',
+	})
 	const [feedback, setFeedback] = useState<Feedback | null>(null)
+	const { id } = useParams()
 
 	useEffect(() => {
-		let objectUrl: string | null = null
-
 		const loadResume = async () => {
 			try {
 				const resume = await kv.get(`resume:${id}`)
@@ -45,13 +47,19 @@ export default function Resume() {
 				if (!resume) return
 
 				const data = JSON.parse(resume)
+
 				const resumeBlob = await fs.read(data.resumePath)
 
 				if (!resumeBlob) return
 
 				const pdfBlob = new Blob([resumeBlob], { type: 'application/pdf' })
-				objectUrl = URL.createObjectURL(pdfBlob)
-				setResumeUrl(objectUrl)
+
+				setResumeData((prev) => ({
+					...prev,
+					jobTitle: data.jobTitle,
+					companyName: data.companyName,
+					fileUrl: URL.createObjectURL(pdfBlob),
+				}))
 
 				setFeedback(data.feedback)
 			} catch (error) {
@@ -60,37 +68,38 @@ export default function Resume() {
 		}
 
 		loadResume()
-
-		return () => {
-			if (objectUrl) {
-				URL.revokeObjectURL(objectUrl)
-			}
-		}
 	}, [id, fs, kv])
 
-	if (!auth.isAuthenticated) {
+	if (!isLoading && !auth.isAuthenticated) {
 		return <Navigate to='/' replace />
 	}
 
 	return (
-		<div className='h-screen'>
+		<>
 			<Navbar>
-				{resumeUrl ? (
-					<LinkButton href={resumeUrl} variant='secondary' fileRoute>
+				{resumeData.fileUrl ? (
+					<LinkButton href={resumeData.fileUrl} variant='secondary' fileRoute>
 						<SquareArrowOutUpRight />
 						<span>view resume</span>
 					</LinkButton>
 				) : (
-					<Loader className='size-8 animate-spin text-indigo-400' />
+					<Loader className='size-8 animate-spin text-primary' />
 				)}
 			</Navbar>
-			<main>
-				<div className='flex items-center justify-between px-16'>
-					<h2 className='font-heading text-3xl'>Resume Review</h2>
+
+			<section className='my-8 lg:m-12'>
+				<div className='flex items-center justify-between'>
+					<h2 className='mb-4 font-heading font-semibold text-2xl'>
+						resume review
+					</h2>
 				</div>
 				{feedback && (
-					<div className='flex flex-col gap-6 px-16 py-12'>
-						<Summary feedback={feedback} />
+					<div className='flex flex-col gap-8'>
+						<Summary
+							companyName={resumeData.companyName}
+							jobTitle={resumeData.jobTitle}
+							feedback={feedback}
+						/>
 						<ATS
 							score={feedback.ATS.score || 0}
 							suggestions={feedback.ATS.tips}
@@ -98,7 +107,7 @@ export default function Resume() {
 						<Details feedback={feedback} />
 					</div>
 				)}
-			</main>
-		</div>
+			</section>
+		</>
 	)
 }

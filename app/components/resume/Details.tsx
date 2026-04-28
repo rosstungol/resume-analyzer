@@ -1,14 +1,14 @@
 import { BadgeAlert, BadgeCheck } from 'lucide-react'
 
-import type { Feedback } from '@/data/types'
-import { cn } from '@/lib/utils'
-import { ScoreBadge } from '../ui/ScoreBadge'
 import {
 	Accordion,
 	AccordionContent,
-	AccordionHeader,
 	AccordionItem,
-} from './Accordion'
+	AccordionTrigger,
+} from '@/components/ui/Accordion'
+import type { Feedback } from '@/data/types'
+import { cn } from '@/lib/utils'
+import { ScoreBadge } from '../ui/ScoreBadge'
 
 const CategoryHeader = ({
 	title,
@@ -19,7 +19,11 @@ const CategoryHeader = ({
 }) => {
 	return (
 		<div className='flex flex-row items-center gap-4 py-2'>
-			{categoryScore > 69 ? <BadgeCheck /> : <BadgeAlert />}
+			{categoryScore > 69 ? (
+				<BadgeCheck className='text-green-600' />
+			) : (
+				<BadgeAlert className='text-yellow-500' />
+			)}
 			<h2 className='flex items-center gap-2'>
 				<span className='font-semibold text-2xl'>
 					{title} - {categoryScore}
@@ -38,12 +42,16 @@ const CategoryContent = ({
 	tips: { type: 'good' | 'improve'; tip: string; explanation: string }[]
 }) => {
 	return (
-		<div className='flex w-full flex-col items-center gap-4'>
-			<div className='grid w-full grid-cols-2 gap-4 rounded-lg bg-mauve-50 px-5 py-4'>
+		<div className='flex w-full flex-col items-center gap-4 sm:p-4'>
+			<div className='grid w-full grid-cols-1 gap-4 rounded-lg border-2 p-6 md:grid-cols-2'>
 				{tips.map((tip) => (
 					<div className='flex flex-row items-center gap-2' key={tip.tip}>
-						{tip.type === 'good' ? <BadgeCheck /> : <BadgeAlert />}
-						<p className='text-mauve-500 text-xl'>{tip.tip}</p>
+						{tip.type === 'good' ? (
+							<BadgeCheck className='text-green-600' />
+						) : (
+							<BadgeAlert className='text-yellow-500' />
+						)}
+						<p className='text-xl'>{tip.tip}</p>
 					</div>
 				))}
 			</div>
@@ -52,14 +60,18 @@ const CategoryContent = ({
 					<div
 						key={tip.tip}
 						className={cn(
-							'flex flex-col gap-2 rounded-2xl p-4',
+							'flex flex-col gap-2 rounded-lg border-2 p-4',
 							tip.type === 'good'
-								? 'border border-green-200 bg-green-50 text-green-700'
-								: 'border border-yellow-200 bg-yellow-50 text-yellow-700'
+								? 'border-green-200 bg-green-50'
+								: 'border-yellow-200 bg-yellow-50'
 						)}
 					>
 						<div className='flex flex-row items-center gap-2'>
-							{tip.type === 'good' ? <BadgeCheck /> : <BadgeAlert />}
+							{tip.type === 'good' ? (
+								<BadgeCheck className='text-green-600' />
+							) : (
+								<BadgeAlert className='text-yellow-500' />
+							)}
 							<p className='font-semibold text-xl'>{tip.tip}</p>
 						</div>
 						<p>{tip.explanation}</p>
@@ -72,49 +84,54 @@ const CategoryContent = ({
 
 export function Details({ feedback }: { feedback: Feedback }) {
 	return (
-		<div className='flex w-full flex-col gap-4'>
-			<Accordion>
-				<AccordionItem id='tone-style'>
-					<AccordionHeader itemId='tone-style'>
+		<div className='card card-shadow'>
+			<Accordion
+				type='single'
+				collapsible
+				defaultValue='toneAndStyle'
+				className=''
+			>
+				<AccordionItem value='toneAndStyle'>
+					<AccordionTrigger>
 						<CategoryHeader
 							title='Tone & Style'
 							categoryScore={feedback.toneAndStyle.score}
 						/>
-					</AccordionHeader>
-					<AccordionContent itemId='tone-style'>
+					</AccordionTrigger>
+					<AccordionContent>
 						<CategoryContent tips={feedback.toneAndStyle.tips} />
 					</AccordionContent>
 				</AccordionItem>
-				<AccordionItem id='content'>
-					<AccordionHeader itemId='content'>
+				<AccordionItem value='content'>
+					<AccordionTrigger>
 						<CategoryHeader
 							title='Content'
 							categoryScore={feedback.content.score}
 						/>
-					</AccordionHeader>
-					<AccordionContent itemId='content'>
+					</AccordionTrigger>
+					<AccordionContent>
 						<CategoryContent tips={feedback.content.tips} />
 					</AccordionContent>
 				</AccordionItem>
-				<AccordionItem id='structure'>
-					<AccordionHeader itemId='structure'>
+				<AccordionItem value='structure'>
+					<AccordionTrigger>
 						<CategoryHeader
 							title='Structure'
 							categoryScore={feedback.structure.score}
 						/>
-					</AccordionHeader>
-					<AccordionContent itemId='structure'>
+					</AccordionTrigger>
+					<AccordionContent>
 						<CategoryContent tips={feedback.structure.tips} />
 					</AccordionContent>
 				</AccordionItem>
-				<AccordionItem id='skills' withBorder={false}>
-					<AccordionHeader itemId='skills'>
+				<AccordionItem value='skills'>
+					<AccordionTrigger>
 						<CategoryHeader
 							title='Skills'
 							categoryScore={feedback.skills.score}
 						/>
-					</AccordionHeader>
-					<AccordionContent itemId='skills'>
+					</AccordionTrigger>
+					<AccordionContent>
 						<CategoryContent tips={feedback.skills.tips} />
 					</AccordionContent>
 				</AccordionItem>
