@@ -8,7 +8,7 @@ import { ATS } from '@/components/resume/ATS'
 import { Details } from '@/components/resume/Details'
 import { Summary } from '@/components/resume/Summary'
 import { LinkButton } from '@/components/ui/LinkButton'
-import type { Resume } from '@/data/types'
+import type { ResumeFeedbackData } from '@/data/types'
 import { usePuterStore } from '@/lib/puter'
 
 export function meta() {
@@ -21,8 +21,11 @@ export function meta() {
 	]
 }
 
-type ResumeData = Pick<Resume, 'jobTitle' | 'companyName' | 'feedback'> & {
-	fileUrl: string | null
+const INITIAL_RESUME_DATA = {
+	fileUrl: null,
+	companyName: '',
+	jobTitle: '',
+	feedback: null,
 }
 
 export default function ResumePage() {
@@ -36,14 +39,14 @@ export default function ResumePage() {
 	)
 
 	const { id } = useParams()
-	const [resumeData, setResumeData] = useState<ResumeData>({
-		fileUrl: '',
-		companyName: '',
-		jobTitle: '',
-		feedback: null,
-	})
+	const [resumeFeedbackData, setResumeFeedbackData] =
+		useState<ResumeFeedbackData>(INITIAL_RESUME_DATA)
 
 	useEffect(() => {
+		setResumeFeedbackData(INITIAL_RESUME_DATA)
+
+		if (isLoading || !auth.isAuthenticated || !id) return
+
 		let active = true
 		let objectUrl: string | null = null
 
@@ -66,7 +69,7 @@ export default function ResumePage() {
 					return
 				}
 
-				setResumeData((prev) => ({
+				setResumeFeedbackData((prev) => ({
 					...prev,
 					jobTitle: data.jobTitle,
 					companyName: data.companyName,
@@ -84,7 +87,7 @@ export default function ResumePage() {
 			active = false
 			if (objectUrl) URL.revokeObjectURL(objectUrl)
 		}
-	}, [id, fs, kv])
+	}, [id, fs, kv, isLoading, auth.isAuthenticated])
 
 	if (!isLoading && !auth.isAuthenticated) {
 		return <Navigate to='/' replace />
@@ -93,8 +96,12 @@ export default function ResumePage() {
 	return (
 		<>
 			<Navbar>
-				{resumeData.fileUrl ? (
-					<LinkButton href={resumeData.fileUrl} variant='secondary' fileRoute>
+				{resumeFeedbackData.fileUrl ? (
+					<LinkButton
+						href={resumeFeedbackData.fileUrl}
+						variant='secondary'
+						fileRoute
+					>
 						<SquareArrowOutUpRight />
 						<span>view resume</span>
 					</LinkButton>
@@ -109,18 +116,18 @@ export default function ResumePage() {
 						resume review
 					</h2>
 				</div>
-				{resumeData.feedback && (
+				{resumeFeedbackData.feedback && (
 					<div className='flex flex-col gap-8'>
 						<Summary
-							companyName={resumeData.companyName}
-							jobTitle={resumeData.jobTitle}
-							feedback={resumeData.feedback}
+							companyName={resumeFeedbackData.companyName}
+							jobTitle={resumeFeedbackData.jobTitle}
+							feedback={resumeFeedbackData.feedback}
 						/>
 						<ATS
-							score={resumeData.feedback.ATS.score || 0}
-							suggestions={resumeData.feedback.ATS.tips}
+							score={resumeFeedbackData.feedback.ATS.score || 0}
+							suggestions={resumeFeedbackData.feedback.ATS.tips}
 						/>
-						<Details feedback={resumeData.feedback} />
+						<Details feedback={resumeFeedbackData.feedback} />
 					</div>
 				)}
 			</section>
