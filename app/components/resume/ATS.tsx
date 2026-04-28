@@ -14,7 +14,7 @@ export function ATS({ score, suggestions }: ATSProps) {
 	const normalizedScore = Math.max(0, Math.min(100, Math.round(score)))
 	const iconSrc =
 		normalizedScore > 69 ? (
-			<BadgeCheck aria-hidden='true' className='size-10 text-green-600' />
+			<BadgeCheck aria-hidden='true' className='size-10 text-green-500' />
 		) : normalizedScore > 49 ? (
 			<BadgeAlert aria-hidden='true' className='size-10 text-yellow-500' />
 		) : (
@@ -53,7 +53,7 @@ export function ATS({ score, suggestions }: ATSProps) {
 					{suggestions.map((suggestion) => (
 						<div key={suggestion.tip} className='flex items-start gap-3'>
 							{suggestion.type === 'good' ? (
-								<BadgeCheck className='text-green-600' />
+								<BadgeCheck className='text-green-500' />
 							) : (
 								<BadgeAlert className='text-yellow-500' />
 							)}

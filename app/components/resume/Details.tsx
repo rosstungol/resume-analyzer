@@ -12,7 +12,7 @@ import { ScoreBadge } from '../ui/ScoreBadge'
 
 const StatusIcon = ({ type }: { type: 'good' | 'improve' }) =>
 	type === 'good' ? (
-		<BadgeCheck className='text-green-600' />
+		<BadgeCheck className='text-green-500' />
 	) : (
 		<BadgeAlert className='text-yellow-500' />
 	)
@@ -61,8 +61,8 @@ const CategoryContent = ({
 						className={cn(
 							'flex flex-col gap-2 rounded-lg border-2 p-4',
 							tip.type === 'good'
-								? 'border-green-200 bg-green-50'
-								: 'border-yellow-200 bg-yellow-50'
+								? 'border-green-300 bg-green-50'
+								: 'border-yellow-300 bg-yellow-50'
 						)}
 					>
 						<div className='flex flex-row items-center gap-2'>

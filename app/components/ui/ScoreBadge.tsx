@@ -10,19 +10,19 @@ export function ScoreBadge({ score }: { score: number }) {
 
 	if (clampedScore > 69) {
 		badgeText = 'Excellent'
-		badgeColor = 'bg-green-300'
+		badgeColor = 'bg-green-200 border-green-300'
 	} else if (clampedScore > 49) {
 		badgeText = 'Good'
-		badgeColor = 'bg-yellow-300'
+		badgeColor = 'bg-yellow-200 border-yellow-300'
 	} else {
 		badgeText = 'Needs work'
-		badgeColor = 'bg-red-200 border-red-600'
+		badgeColor = 'bg-red-200 border-red-300'
 	}
 
 	return (
 		<div
 			className={cn(
-				'inline-block rounded-full px-2 py-1 font-bold text-xs',
+				'inline-block rounded-full border-2 px-2 py-1 font-bold text-xs',
 				badgeColor
 			)}
 		>
