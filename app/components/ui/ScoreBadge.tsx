@@ -14,7 +14,7 @@ export function ScoreBadge({ score }: { score: number }) {
 	} else if (clampedScore > 49) {
 		badgeText = 'Good'
 		badgeColor = 'bg-yellow-300'
-	} else if (clampedScore < 49) {
+	} else {
 		badgeText = 'Needs work'
 		badgeColor = 'bg-red-200 border-red-600'
 	}

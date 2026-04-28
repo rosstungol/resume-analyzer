@@ -11,17 +11,22 @@ type ATSProps = {
 }
 
 export function ATS({ score, suggestions }: ATSProps) {
+	const normalizedScore = Math.max(0, Math.min(100, Math.round(score)))
 	const iconSrc =
-		score > 69 ? (
-			<BadgeCheck className='size-10 text-green-600' />
-		) : score > 49 ? (
-			<BadgeAlert className='size-10 text-yellow-500' />
+		normalizedScore > 69 ? (
+			<BadgeCheck aria-hidden='true' className='size-10 text-green-600' />
+		) : normalizedScore > 49 ? (
+			<BadgeAlert aria-hidden='true' className='size-10 text-yellow-500' />
 		) : (
-			<BadgeX className='size-10 text-red-400' />
+			<BadgeX aria-hidden='true' className='size-10 text-red-400' />
 		)
 
 	const subtitle =
-		score > 69 ? 'Great Job!' : score > 49 ? 'Good Start' : 'Needs Improvement'
+		normalizedScore > 69
+			? 'Great Job!'
+			: normalizedScore > 49
+				? 'Good Start'
+				: 'Needs Improvement'
 
 	return (
 		<div className='card card-shadow p-8'>
@@ -29,7 +34,9 @@ export function ATS({ score, suggestions }: ATSProps) {
 				{iconSrc}
 				<div>
 					<h2 className='flex items-center gap-1'>
-						<span className='font-semibold text-2xl'>ATS Score - {score}</span>
+						<span className='font-semibold text-2xl'>
+							ATS Score - {normalizedScore}
+						</span>
 						<span className='text-muted-foreground text-xs'>/ 100</span>
 					</h2>
 				</div>

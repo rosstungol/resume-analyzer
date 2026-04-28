@@ -10,6 +10,13 @@ import type { Feedback } from '@/data/types'
 import { cn } from '@/lib/utils'
 import { ScoreBadge } from '../ui/ScoreBadge'
 
+const StatusIcon = ({ type }: { type: 'good' | 'improve' }) =>
+	type === 'good' ? (
+		<BadgeCheck className='text-green-600' />
+	) : (
+		<BadgeAlert className='text-yellow-500' />
+	)
+
 const CategoryHeader = ({
 	title,
 	categoryScore,
@@ -19,11 +26,7 @@ const CategoryHeader = ({
 }) => {
 	return (
 		<div className='flex flex-row items-center gap-4 py-2'>
-			{categoryScore > 69 ? (
-				<BadgeCheck className='text-green-600' />
-			) : (
-				<BadgeAlert className='text-yellow-500' />
-			)}
+			<StatusIcon type={categoryScore > 69 ? 'good' : 'improve'} />
 			<h2 className='flex items-center gap-2'>
 				<span className='font-semibold text-2xl'>
 					{title} - {categoryScore}
@@ -46,11 +49,7 @@ const CategoryContent = ({
 			<div className='grid w-full grid-cols-1 gap-4 rounded-lg border-2 p-6 md:grid-cols-2'>
 				{tips.map((tip) => (
 					<div className='flex flex-row items-center gap-2' key={tip.tip}>
-						{tip.type === 'good' ? (
-							<BadgeCheck className='text-green-600' />
-						) : (
-							<BadgeAlert className='text-yellow-500' />
-						)}
+						<StatusIcon type={tip.type} />
 						<p className='text-xl'>{tip.tip}</p>
 					</div>
 				))}
@@ -67,11 +66,7 @@ const CategoryContent = ({
 						)}
 					>
 						<div className='flex flex-row items-center gap-2'>
-							{tip.type === 'good' ? (
-								<BadgeCheck className='text-green-600' />
-							) : (
-								<BadgeAlert className='text-yellow-500' />
-							)}
+							<StatusIcon type={tip.type} />
 							<p className='font-semibold text-xl'>{tip.tip}</p>
 						</div>
 						<p>{tip.explanation}</p>
@@ -85,12 +80,7 @@ const CategoryContent = ({
 export function Details({ feedback }: { feedback: Feedback }) {
 	return (
 		<div className='card card-shadow'>
-			<Accordion
-				type='single'
-				collapsible
-				defaultValue='toneAndStyle'
-				className=''
-			>
+			<Accordion type='single' collapsible defaultValue='toneAndStyle'>
 				<AccordionItem value='toneAndStyle'>
 					<AccordionTrigger>
 						<CategoryHeader

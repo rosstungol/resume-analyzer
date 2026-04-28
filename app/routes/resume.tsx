@@ -8,7 +8,7 @@ import { ATS } from '@/components/resume/ATS'
 import { Details } from '@/components/resume/Details'
 import { Summary } from '@/components/resume/Summary'
 import { LinkButton } from '@/components/ui/LinkButton'
-import type { Feedback } from '@/data/types'
+import type { Resume } from '@/data/types'
 import { usePuterStore } from '@/lib/puter'
 
 export function meta() {
@@ -21,7 +21,11 @@ export function meta() {
 	]
 }
 
-export default function Resume() {
+type ResumeData = Pick<Resume, 'jobTitle' | 'companyName' | 'feedback'> & {
+	fileUrl: string | null
+}
+
+export default function ResumePage() {
 	const { auth, fs, isLoading, kv } = usePuterStore(
 		useShallow((state) => ({
 			auth: state.auth,
@@ -31,43 +35,55 @@ export default function Resume() {
 		}))
 	)
 
-	const [resumeData, setResumeData] = useState({
+	const { id } = useParams()
+	const [resumeData, setResumeData] = useState<ResumeData>({
 		fileUrl: '',
 		companyName: '',
 		jobTitle: '',
+		feedback: null,
 	})
-	const [feedback, setFeedback] = useState<Feedback | null>(null)
-	const { id } = useParams()
 
 	useEffect(() => {
+		let active = true
+		let objectUrl: string | null = null
+
 		const loadResume = async () => {
 			try {
 				const resume = await kv.get(`resume:${id}`)
 
-				if (!resume) return
+				if (!resume || !active) return
 
 				const data = JSON.parse(resume)
-
 				const resumeBlob = await fs.read(data.resumePath)
 
-				if (!resumeBlob) return
+				if (!resumeBlob || !active) return
 
 				const pdfBlob = new Blob([resumeBlob], { type: 'application/pdf' })
+				objectUrl = URL.createObjectURL(pdfBlob)
+
+				if (!active) {
+					URL.revokeObjectURL(objectUrl)
+					return
+				}
 
 				setResumeData((prev) => ({
 					...prev,
 					jobTitle: data.jobTitle,
 					companyName: data.companyName,
-					fileUrl: URL.createObjectURL(pdfBlob),
+					fileUrl: objectUrl,
+					feedback: data.feedback,
 				}))
-
-				setFeedback(data.feedback)
 			} catch (error) {
 				console.error('Failed to load resume:', error)
 			}
 		}
 
 		loadResume()
+
+		return () => {
+			active = false
+			if (objectUrl) URL.revokeObjectURL(objectUrl)
+		}
 	}, [id, fs, kv])
 
 	if (!isLoading && !auth.isAuthenticated) {
@@ -93,18 +109,18 @@ export default function Resume() {
 						resume review
 					</h2>
 				</div>
-				{feedback && (
+				{resumeData.feedback && (
 					<div className='flex flex-col gap-8'>
 						<Summary
 							companyName={resumeData.companyName}
 							jobTitle={resumeData.jobTitle}
-							feedback={feedback}
+							feedback={resumeData.feedback}
 						/>
 						<ATS
-							score={feedback.ATS.score || 0}
-							suggestions={feedback.ATS.tips}
+							score={resumeData.feedback.ATS.score || 0}
+							suggestions={resumeData.feedback.ATS.tips}
 						/>
-						<Details feedback={feedback} />
+						<Details feedback={resumeData.feedback} />
 					</div>
 				)}
 			</section>

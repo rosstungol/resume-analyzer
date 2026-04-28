@@ -6,11 +6,10 @@ export type UploadFormData = z.infer<typeof uploadFormSchema>
 
 export type Resume = {
 	id: string
-	companyName?: string
-	jobTitle?: string
-	imagePath: string
+	companyName: string
+	jobTitle: string
 	resumePath: string
-	feedback: Feedback
+	feedback: Feedback | null
 }
 
 export type Feedback = {
