@@ -12,10 +12,10 @@ type GridItemProps = {
 
 export function GridItem({ href, title, subtitle, score }: GridItemProps) {
 	return (
-		<li className='card card-shadow overflow-hidden transition-all hover:border-ring'>
+		<li className='card card-shadow overflow-hidden transition-all'>
 			<Link
 				to={href}
-				className='flex cursor-pointer items-center gap-2 p-4'
+				className='relative flex cursor-pointer flex-col items-center gap-2 p-4 sm:flex-row'
 				aria-label={title ?? 'Resume'}
 			>
 				<div className='size-32'>
@@ -29,7 +29,7 @@ export function GridItem({ href, title, subtitle, score }: GridItemProps) {
 						{subtitle}
 					</p>
 				</div>
-				<ArrowUpRight className='ml-auto size-8 self-start text-muted-foreground' />
+				<ArrowUpRight className='absolute top-4 right-4 size-8 text-muted-foreground' />
 			</Link>
 		</li>
 	)
