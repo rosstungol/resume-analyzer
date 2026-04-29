@@ -73,24 +73,26 @@ export default function HomePage() {
 		return (
 			<>
 				<Navbar>
-					{isLoading ? (
-						<Loader className='size-8 animate-spin text-primary' />
+					{!isLoading ? (
+						<>
+							<Button variant='secondary' onClick={auth.signOut}>
+								<LogOut />
+								<span>log out</span>
+							</Button>
+							<LinkButton variant='primary' href='/upload'>
+								<FileUp />
+								<span>upload resume</span>
+							</LinkButton>
+						</>
 					) : (
-						<Button variant='secondary' onClick={auth.signOut}>
-							<LogOut />
-							log out
-						</Button>
+						<Loader className='size-8 animate-spin text-accent-foreground' />
 					)}
-					<LinkButton variant='primary' href='/upload'>
-						<FileUp />
-						<span>upload resume</span>
-					</LinkButton>
 				</Navbar>
 
 				<section className='my-8 lg:m-12'>
 					<div>
 						{loadingResumes && (
-							<Loader className='m-auto size-16 animate-spin text-primary' />
+							<Loader className='m-auto size-16 animate-spin text-accent-foreground' />
 						)}
 
 						{!loadingResumes && resumes.length > 0 && (
@@ -112,7 +114,7 @@ export default function HomePage() {
 		<>
 			<Navbar>
 				{isLoading ? (
-					<Loader className='size-8 animate-spin text-primary' />
+					<Loader className='size-8 animate-spin text-accent-foreground' />
 				) : (
 					<Button onClick={auth.signIn}>
 						<LogIn />

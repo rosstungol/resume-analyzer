@@ -1,4 +1,4 @@
-import { Loader, LogIn, LogOut } from 'lucide-react'
+import { Loader, LogOut } from 'lucide-react'
 import { Navigate } from 'react-router'
 import { useShallow } from 'zustand/shallow'
 
@@ -32,18 +32,13 @@ export default function UploadPage() {
 	return (
 		<>
 			<Navbar>
-				{isLoading ? (
-					<Loader className='size-8 animate-spin text-primary' />
-				) : auth.isAuthenticated ? (
+				{!isLoading && auth.isAuthenticated ? (
 					<Button variant='secondary' onClick={auth.signOut}>
 						<LogOut />
 						log out
 					</Button>
 				) : (
-					<Button onClick={auth.signIn}>
-						<LogIn />
-						log in
-					</Button>
+					<Loader className='size-8 animate-spin text-accent-foreground' />
 				)}
 			</Navbar>
 

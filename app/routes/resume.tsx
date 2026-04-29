@@ -1,4 +1,4 @@
-import { Loader, SquareArrowOutUpRight } from 'lucide-react'
+import { Loader, LogOut, SquareArrowOutUpRight } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { Navigate, useParams } from 'react-router'
 import { useShallow } from 'zustand/shallow'
@@ -7,6 +7,7 @@ import { Navbar } from '@/components/layout/Navbar'
 import { ATS } from '@/components/resume/ATS'
 import { Details } from '@/components/resume/Details'
 import { Summary } from '@/components/resume/Summary'
+import { Button } from '@/components/ui/Button'
 import { LinkButton } from '@/components/ui/LinkButton'
 import type { ResumeFeedbackData } from '@/data/types'
 import { usePuterStore } from '@/lib/puter'
@@ -96,17 +97,24 @@ export default function ResumePage() {
 	return (
 		<>
 			<Navbar>
-				{resumeFeedbackData.fileUrl ? (
-					<LinkButton
-						href={resumeFeedbackData.fileUrl}
-						variant='secondary'
-						fileRoute
-					>
-						<SquareArrowOutUpRight />
-						<span>view resume</span>
-					</LinkButton>
+				{!isLoading && resumeFeedbackData.fileUrl ? (
+					<>
+						<Button variant='secondary' onClick={auth.signOut}>
+							<LogOut />
+							log out
+						</Button>
+
+						<LinkButton
+							href={resumeFeedbackData.fileUrl}
+							variant='primary'
+							fileRoute
+						>
+							<SquareArrowOutUpRight />
+							<span>view resume</span>
+						</LinkButton>
+					</>
 				) : (
-					<Loader className='size-8 animate-spin text-primary' />
+					<Loader className='size-8 animate-spin text-accent-foreground' />
 				)}
 			</Navbar>
 
