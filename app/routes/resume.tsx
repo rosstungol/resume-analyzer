@@ -97,21 +97,22 @@ export default function ResumePage() {
 	return (
 		<>
 			<Navbar>
-				{!isLoading && resumeFeedbackData.fileUrl ? (
+				{!isLoading ? (
 					<>
 						<Button variant='secondary' onClick={auth.signOut}>
 							<LogOut />
 							log out
 						</Button>
-
-						<LinkButton
-							href={resumeFeedbackData.fileUrl}
-							variant='primary'
-							fileRoute
-						>
-							<SquareArrowOutUpRight />
-							<span>view resume</span>
-						</LinkButton>
+						{resumeFeedbackData.fileUrl && (
+							<LinkButton
+								href={resumeFeedbackData.fileUrl}
+								variant='primary'
+								fileRoute
+							>
+								<SquareArrowOutUpRight />
+								<span>view resume</span>
+							</LinkButton>
+						)}
 					</>
 				) : (
 					<Loader className='size-8 animate-spin text-accent-foreground' />
