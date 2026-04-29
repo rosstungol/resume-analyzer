@@ -2,7 +2,12 @@ import type { Feedback } from '@/data/types'
 import { ScoreBadge } from '../ui/ScoreBadge'
 import { ScoreCircle } from '../ui/ScoreCircle'
 
-function Category({ title, score }: { title: string; score: number }) {
+type CategoryProps = {
+	title: string
+	score: number
+}
+
+function Category({ title, score }: CategoryProps) {
 	return (
 		<div>
 			<div className='flex justify-between'>

@@ -22,11 +22,11 @@ export function ScoreBadge({ score }: { score: number }) {
 	return (
 		<div
 			className={cn(
-				'inline-block h-fit w-fit rounded-full px-2 py-1 font-semibold text-white text-xs',
+				'inline-block h-fit w-fit rounded-full px-2 py-1 font-semibold text-stroke-sm text-white text-xs',
 				badgeColor
 			)}
 		>
-			<p>{badgeText}</p>
+			<p className='text-stroke-sm'>{badgeText}</p>
 		</div>
 	)
 }

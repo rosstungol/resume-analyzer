@@ -50,7 +50,7 @@
 	--card: oklch(1 0 0);
 	--card-foreground: var(--foreground);
 	--popover: oklch(1 0 0);
-	--popover-foreground: oklch(0.145 0 0);
+	--popover-foreground: var(--foreground);
 	--primary: var(--foreground);
 	--primary-foreground: oklch(1 0 0);
 	--secondary: oklch(1 0 0);
@@ -67,6 +67,7 @@
 	--ring: oklch(0.554 0.1625 287.5);
 	--radius: 0.625rem;
 	--shadow-card: var(--ring);
+	--text-stroke: oklch(0.364 0.0293 323.9);
 }
 
 .dark {
@@ -83,14 +84,15 @@
 	--muted: oklch(0.269 0 0);
 	--muted-foreground: oklch(0.708 0 0);
 	--accent: oklch(0.269 0 0);
-	--accent-foreground: var(--accent-foreground);
-	--success: var(--success);
-	--warning: var(--warning);
-	--destructive: var(--destructive);
+	--accent-foreground: oklch(0.8 0.1673 334.9);
+	--success: oklch(0.642 0.1085 183);
+	--warning: oklch(0.766 0.1685 59.9);
+	--destructive: oklch(0.68 0.2031 34.3);
 	--border: oklch(1 0 0 / 10%);
 	--input: oklch(1 0 0 / 15%);
 	--ring: var(--primary);
 	--shadow-card: rgb(0 0 0 / 60%);
+	--text-stroke: oklch(0.364 0.0293 323.9);
 }
 
 @layer base {
@@ -106,12 +108,12 @@
 }
 
 @utility text-stroke {
-	-webkit-text-stroke: 4px black;
+	-webkit-text-stroke: 4px var(--text-stroke);
 	paint-order: stroke fill;
 }
 
 @utility text-stroke-sm {
-	-webkit-text-stroke: 2px black;
+	-webkit-text-stroke: 2px var(--text-stroke);
 	paint-order: stroke fill;
 }
 

@@ -1,4 +1,4 @@
-import { cn } from '@/lib/utils'
+import { cn, scoreColor } from '@/lib/utils'
 
 export function ScoreCircle({
 	score = 75,
@@ -16,8 +16,6 @@ export function ScoreCircle({
 	const circumference = 2 * Math.PI * normalizedRadius
 	const progress = clampedScore / 100
 	const strokeDashoffset = circumference * (1 - progress)
-	const strokeColor =
-		clampedScore > 69 ? '#1ea293' : clampedScore > 49 ? '#ff9527' : '#fc5b36'
 
 	return (
 		<div className={cn('relative', size === 'sm' ? 'size-32' : 'size-48')}>
@@ -36,12 +34,11 @@ export function ScoreCircle({
 					strokeWidth={stroke}
 					fill='transparent'
 				/>
-				<path stroke={strokeColor} />
 				<circle
 					cx='50'
 					cy='50'
 					r={normalizedRadius}
-					stroke={strokeColor}
+					stroke={scoreColor(clampedScore)}
 					strokeWidth={stroke}
 					fill='transparent'
 					strokeDasharray={circumference}
@@ -57,11 +54,7 @@ export function ScoreCircle({
 							className={cn(
 								'font-bold [text-shadow:1px_1px_0px_rgba(0,0,0,1)]',
 								size === 'sm' ? 'text-4xl' : 'text-6xl',
-								clampedScore > 69
-									? 'text-[#1ea293]'
-									: clampedScore > 49
-										? 'text-[#ff9527]'
-										: 'text-[#fc5b36]'
+								`text-[${scoreColor(clampedScore)}]`
 							)}
 						>
 							{clampedScore}
