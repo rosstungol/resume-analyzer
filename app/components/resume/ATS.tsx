@@ -1,9 +1,6 @@
 import { BadgeAlert, BadgeCheck, BadgeX } from 'lucide-react'
 
-type Suggestion = {
-	type: 'good' | 'improve'
-	tip: string
-}
+import type { Suggestion } from '@/data/types'
 
 type ATSProps = {
 	score: number
@@ -12,6 +9,11 @@ type ATSProps = {
 
 export function ATS({ score, suggestions }: ATSProps) {
 	const normalizedScore = Math.max(0, Math.min(100, Math.round(score)))
+	const suggestionsId = suggestions.map((item) => ({
+		...item,
+		id: crypto.randomUUID(),
+	}))
+
 	const iconSrc =
 		normalizedScore > 69 ? (
 			<BadgeCheck aria-hidden='true' className='size-10 text-success' />
@@ -50,13 +52,13 @@ export function ATS({ score, suggestions }: ATSProps) {
 				</p>
 
 				<div className='space-y-3'>
-					{suggestions.map((suggestion) => (
-						<div key={suggestion.tip} className='flex items-start gap-2'>
+					{suggestionsId.map((suggestion) => (
+						<div key={suggestion.id} className='flex items-start gap-2'>
 							<div className='size-6'>
 								{suggestion.type === 'good' ? (
-									<BadgeCheck className='text-success' />
+									<BadgeCheck aria-hidden='true' className='text-success' />
 								) : (
-									<BadgeAlert className='text-warning' />
+									<BadgeAlert aria-hidden='true' className='text-warning' />
 								)}
 							</div>
 
