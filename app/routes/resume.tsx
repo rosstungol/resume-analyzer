@@ -112,7 +112,7 @@ export default function ResumePage() {
 
 			<section className='my-8 lg:m-12'>
 				<div className='flex items-center justify-between'>
-					<h2 className='mb-4 font-heading font-semibold text-2xl'>
+					<h2 className='mb-4 font-bold font-heading text-2xl'>
 						resume review
 					</h2>
 				</div>

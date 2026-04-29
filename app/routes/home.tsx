@@ -95,7 +95,7 @@ export default function HomePage() {
 
 						{!loadingResumes && resumes.length > 0 && (
 							<>
-								<h2 className='mb-4 font-heading font-semibold text-2xl'>
+								<h2 className='mb-4 font-bold font-heading text-2xl'>
 									resume reviews
 								</h2>
 								<ResumeGrid resumes={resumes} />
