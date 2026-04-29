@@ -19,6 +19,17 @@ export type Resume = {
 	feedback: Feedback | null
 }
 
+export type Suggestion = {
+	type: 'good' | 'improve'
+	tip: string
+}
+
+export type Tip = {
+	type: 'good' | 'improve'
+	tip: string
+	explanation: string
+}
+
 export type Feedback = {
 	overallScore: number
 	ATS: {
@@ -30,11 +41,7 @@ export type Feedback = {
 	}
 	toneAndStyle: {
 		score: number
-		tips: {
-			type: 'good' | 'improve'
-			tip: string
-			explanation: string
-		}[]
+		tips: Tip[]
 	}
 	content: {
 		score: number
