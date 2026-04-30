@@ -1,12 +1,12 @@
-import { FileUp, Loader, LogIn, LogOut } from 'lucide-react'
+import { ArrowUpRight, FileUp, Loader } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { useShallow } from 'zustand/shallow'
-
 import { GridBlankState } from '@/components/home/GridBlankState'
 import { ResumeGrid } from '@/components/home/ResumeGrid'
 import { Navbar } from '@/components/layout/Navbar'
-import { Button } from '@/components/ui/Button'
+import { AuthButton } from '@/components/ui/AuthButton'
 import { LinkButton } from '@/components/ui/LinkButton'
+import { TextLink } from '@/components/ui/TextLink'
 import type { Resume } from '@/data/types'
 import type { KVItem } from '@/data/types/puter'
 import { usePuterStore } from '@/lib/puter'
@@ -75,13 +75,10 @@ export default function HomePage() {
 				<Navbar>
 					{!isLoading ? (
 						<>
-							<Button variant='secondary' onClick={auth.signOut}>
-								<LogOut />
-								<span>log out</span>
-							</Button>
+							<AuthButton />
 							<LinkButton variant='primary' href='/upload'>
 								<FileUp />
-								<span>upload resume</span>
+								<span>Upload Resume</span>
 							</LinkButton>
 						</>
 					) : (
@@ -90,22 +87,26 @@ export default function HomePage() {
 				</Navbar>
 
 				<section className='my-8 lg:m-12'>
-					<div>
-						{loadingResumes && (
-							<Loader className='m-auto size-16 animate-spin text-accent-foreground' />
-						)}
+					{loadingResumes && (
+						<Loader className='m-auto size-16 animate-spin text-accent-foreground' />
+					)}
 
-						{!loadingResumes && resumes.length > 0 && (
-							<>
-								<h2 className='mb-4 font-bold font-heading text-2xl'>
-									resume reviews
+					{!loadingResumes && resumes.length > 0 && (
+						<>
+							<div className='mb-4 flex flex-col items-center justify-between md:flex-row'>
+								<h2 className='font-bold font-heading text-2xl'>
+									Resume Reviews
 								</h2>
-								<ResumeGrid resumes={resumes} />
-							</>
-						)}
+								<TextLink href='/wipe'>
+									<span className='font-semibold'>Manage Files</span>
+									<ArrowUpRight />
+								</TextLink>
+							</div>
+							<ResumeGrid resumes={resumes} />
+						</>
+					)}
 
-						{!loadingResumes && resumes.length === 0 && <GridBlankState />}
-					</div>
+					{!loadingResumes && resumes.length === 0 && <GridBlankState />}
 				</section>
 			</>
 		)
@@ -113,13 +114,10 @@ export default function HomePage() {
 	return (
 		<>
 			<Navbar>
-				{isLoading ? (
-					<Loader className='size-8 animate-spin text-accent-foreground' />
+				{!isLoading ? (
+					<AuthButton />
 				) : (
-					<Button onClick={auth.signIn}>
-						<LogIn />
-						log in
-					</Button>
+					<Loader className='size-8 animate-spin text-accent-foreground' />
 				)}
 			</Navbar>
 

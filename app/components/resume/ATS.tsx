@@ -67,7 +67,7 @@ export function ATS({ score, tips }: ATSProps) {
 				</div>
 			</div>
 
-			<p className='text-sm'>
+			<p className='text-muted-foreground text-sm'>
 				Keep refining your resume to improve your chances of getting past ATS
 				filters and into the hands of recruiters.
 			</p>

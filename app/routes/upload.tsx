@@ -1,9 +1,9 @@
-import { Loader, LogOut } from 'lucide-react'
+import { Loader } from 'lucide-react'
 import { Navigate } from 'react-router'
 import { useShallow } from 'zustand/shallow'
 
 import { Navbar } from '@/components/layout/Navbar'
-import { Button } from '@/components/ui/Button'
+import { AuthButton } from '@/components/ui/AuthButton'
 import { UploadForm } from '@/components/upload/UploadForm'
 import { usePuterStore } from '@/lib/puter'
 
@@ -33,10 +33,7 @@ export default function UploadPage() {
 		<>
 			<Navbar>
 				{!isLoading && auth.isAuthenticated ? (
-					<Button variant='secondary' onClick={auth.signOut}>
-						<LogOut />
-						log out
-					</Button>
+					<AuthButton />
 				) : (
 					<Loader className='size-8 animate-spin text-accent-foreground' />
 				)}

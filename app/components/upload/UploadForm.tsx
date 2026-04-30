@@ -1,4 +1,4 @@
-import { FileSearchCorner, FileUp, ListRestart } from 'lucide-react'
+import { ArrowLeft, FileSearchCorner, FileUp, ListRestart } from 'lucide-react'
 import { type SyntheticEvent, useState } from 'react'
 import { useNavigate } from 'react-router'
 import { useShallow } from 'zustand/shallow'
@@ -10,6 +10,7 @@ import type { AIResponse } from '@/data/types/puter'
 import { usePuterStore } from '@/lib/puter'
 import { cn } from '@/lib/utils'
 import { Button } from '../ui/Button'
+import { TextLink } from '../ui/TextLink'
 import { FileUploader } from './FileUploader'
 
 const INITIAL_FORM_DATA: UploadFormData = {
@@ -180,7 +181,7 @@ export function UploadForm() {
 			<div className='card card-shadow mx-auto w-fit min-w-80 space-y-4 p-8 text-center'>
 				<h2 className='font-heading font-semibold text-2xl'>{statusText}</h2>
 				{!isProcessingError ? (
-					<FileSearchCorner className='m-auto size-16 animate-pulse text-primary' />
+					<FileSearchCorner className='m-auto size-16 animate-pulse text-accent-foreground' />
 				) : (
 					<Button
 						onClick={() => {
@@ -193,7 +194,7 @@ export function UploadForm() {
 						className='mx-auto'
 					>
 						<FileUp />
-						<span>retry upload</span>
+						<span>Retry Upload</span>
 					</Button>
 				)}
 			</div>
@@ -201,9 +202,19 @@ export function UploadForm() {
 
 	return (
 		<>
-			<h2 className='mb-4 font-bold font-heading text-2xl'>
-				upload your resume
-			</h2>
+			<div className='mb-4 flex flex-col items-center justify-between md:flex-row'>
+				<div>
+					<h2 className='font-bold font-heading text-2xl'>
+						Upload your resume
+					</h2>
+				</div>
+				<p className='font-semibold text-muted-foreground'>
+					<TextLink href='/'>
+						<ArrowLeft />
+						<span className='font-semibold'>Back to home</span>
+					</TextLink>
+				</p>
+			</div>
 
 			<div className='card card-shadow p-6 lg:p-10'>
 				<form
@@ -218,10 +229,7 @@ export function UploadForm() {
 								formErrors.companyName ? 'mb-4' : 'mb-11'
 							)}
 						>
-							<label
-								htmlFor='companyName'
-								className='font-semibold text-muted-foreground text-sm'
-							>
+							<label htmlFor='companyName' className='font-semibold text-sm'>
 								Company Name
 							</label>
 							<input
@@ -245,10 +253,7 @@ export function UploadForm() {
 								formErrors.jobTitle ? 'mb-4' : 'mb-11'
 							)}
 						>
-							<label
-								htmlFor='jobTitle'
-								className='font-semibold text-muted-foreground text-sm'
-							>
+							<label htmlFor='jobTitle' className='font-semibold text-sm'>
 								Job Title
 							</label>
 							<input
@@ -267,12 +272,13 @@ export function UploadForm() {
 							)}
 						</div>
 						<div className='flex flex-col gap-2'>
-							<label
-								htmlFor='jobDescription'
-								className='font-semibold text-muted-foreground text-sm'
-							>
+							<label htmlFor='jobDescription' className='font-semibold text-sm'>
 								Job Description
 							</label>
+							<p className='text-muted-foreground text-sm'>
+								Copy the entire job description from the job posting and paste
+								it here.
+							</p>
 							<textarea
 								rows={4}
 								id='jobDescription'
@@ -291,10 +297,7 @@ export function UploadForm() {
 					</div>
 					<div className='flex flex-1 flex-col justify-between gap-4'>
 						<div className='flex flex-col gap-2'>
-							<label
-								htmlFor='uploader'
-								className='font-semibold text-muted-foreground text-sm'
-							>
+							<label htmlFor='uploader' className='font-semibold text-sm'>
 								Upload Resume
 							</label>
 							<FileUploader
@@ -321,7 +324,7 @@ export function UploadForm() {
 								}}
 							>
 								<ListRestart />
-								<span className='hidden sm:inline'>reset</span>
+								<span className='hidden sm:inline'>Reset</span>
 							</Button>
 							<Button
 								type='submit'
@@ -330,7 +333,7 @@ export function UploadForm() {
 								disabled={isProcessing}
 							>
 								<FileSearchCorner />
-								<span>analyze resume</span>
+								<span>Analyze Resume</span>
 							</Button>
 						</div>
 					</div>
