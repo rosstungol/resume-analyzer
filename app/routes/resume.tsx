@@ -134,7 +134,7 @@ export default function ResumePage() {
 						/>
 						<ATS
 							score={resumeFeedbackData.feedback.ATS.score || 0}
-							suggestions={resumeFeedbackData.feedback.ATS.tips}
+							tips={resumeFeedbackData.feedback.ATS.tips}
 						/>
 						<Details feedback={resumeFeedbackData.feedback} />
 					</div>
