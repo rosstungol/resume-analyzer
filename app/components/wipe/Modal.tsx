@@ -12,7 +12,6 @@ type ModalProps = {
 export function Modal({ open, onClose, action }: ModalProps) {
 	const dialogRef = useRef<HTMLDialogElement | null>(null)
 	const [inputValue, setInputValue] = useState<string>('')
-	const [isDisabledButton, setIsDisabledButton] = useState<boolean>(true)
 
 	useEffect(() => {
 		const dialog = dialogRef.current
@@ -25,13 +24,7 @@ export function Modal({ open, onClose, action }: ModalProps) {
 		}
 	}, [open])
 
-	useEffect(() => {
-		if (inputValue === 'delete all data') {
-			setIsDisabledButton(false)
-		} else {
-			setIsDisabledButton(true)
-		}
-	}, [inputValue])
+	const isConfirmationValid = inputValue.toLowerCase() === 'delete all data'
 
 	return (
 		<dialog
@@ -58,7 +51,7 @@ export function Modal({ open, onClose, action }: ModalProps) {
 				type='button'
 				variant='destructive'
 				className='w-full'
-				disabled={isDisabledButton}
+				disabled={!isConfirmationValid}
 				onClick={() => {
 					action()
 					dialogRef.current?.close()
