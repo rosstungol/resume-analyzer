@@ -15,3 +15,7 @@ export function formatSize(bytes: number): string {
 
 	return `${parseFloat((bytes / k ** i).toFixed(2))} ${sizes[i]} `
 }
+
+export function scoreColor(score: number) {
+	return score > 69 ? '#1ea293' : score > 49 ? '#ff9527' : '#fc5b36'
+}

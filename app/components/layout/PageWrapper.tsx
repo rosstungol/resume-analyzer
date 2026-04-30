@@ -13,7 +13,7 @@ export function PageWrapper({ children }: { children: ReactNode }) {
 					dotSize={2}
 					gap={16}
 					baseColor='#d7d0d7'
-					activeColor='#ce7777'
+					activeColor='#705ecb'
 					proximity={120}
 					shockRadius={250}
 					shockStrength={5}

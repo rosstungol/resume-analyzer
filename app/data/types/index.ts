@@ -19,45 +19,25 @@ export type Resume = {
 	feedback: Feedback | null
 }
 
+export type Tip = {
+	type: 'good' | 'improve'
+	tip: string
+	explanation: string
+}
+
+type Category = {
+	score: number
+	tips: Tip[]
+}
+
 export type Feedback = {
 	overallScore: number
 	ATS: {
 		score: number
-		tips: {
-			type: 'good' | 'improve'
-			tip: string
-		}[]
+		tips: Pick<Tip, 'type' | 'tip'>[]
 	}
-	toneAndStyle: {
-		score: number
-		tips: {
-			type: 'good' | 'improve'
-			tip: string
-			explanation: string
-		}[]
-	}
-	content: {
-		score: number
-		tips: {
-			type: 'good' | 'improve'
-			tip: string
-			explanation: string
-		}[]
-	}
-	structure: {
-		score: number
-		tips: {
-			type: 'good' | 'improve'
-			tip: string
-			explanation: string
-		}[]
-	}
-	skills: {
-		score: number
-		tips: {
-			type: 'good' | 'improve'
-			tip: string
-			explanation: string
-		}[]
-	}
+	toneAndStyle: Category
+	content: Category
+	structure: Category
+	skills: Category
 }

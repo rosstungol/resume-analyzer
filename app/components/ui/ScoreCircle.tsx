@@ -1,6 +1,4 @@
-import { useId } from 'react'
-
-import { cn } from '@/lib/utils'
+import { cn, scoreColor } from '@/lib/utils'
 
 export function ScoreCircle({
 	score = 75,
@@ -9,7 +7,6 @@ export function ScoreCircle({
 	score: number
 	size: 'sm' | 'lg'
 }) {
-	const gradientId = useId()
 	const clampedScore = Number.isFinite(score)
 		? Math.max(0, Math.min(100, score))
 		: 0
@@ -37,17 +34,11 @@ export function ScoreCircle({
 					strokeWidth={stroke}
 					fill='transparent'
 				/>
-				<defs>
-					<linearGradient id={gradientId} x1='1' y1='0' x2='0' y2='1'>
-						<stop offset='0%' stopColor='#f2e5e5' />
-						<stop offset='100%' stopColor='#ce7777' />
-					</linearGradient>
-				</defs>
 				<circle
 					cx='50'
 					cy='50'
 					r={normalizedRadius}
-					stroke={`url(#${gradientId})`}
+					stroke={scoreColor(clampedScore)}
 					strokeWidth={stroke}
 					fill='transparent'
 					strokeDasharray={circumference}
@@ -58,14 +49,17 @@ export function ScoreCircle({
 
 			<div className='absolute inset-0 flex-center flex-col'>
 				<div className='flex flex-col items-center font-heading'>
-					<p
-						className={cn(
-							'font-semibold',
-							size === 'sm' ? 'text-3xl' : 'text-5xl'
-						)}
-					>
-						{clampedScore}
-					</p>
+					<div className='text-stroke-sm'>
+						<p
+							className={cn(
+								'font-bold [text-shadow:1px_1px_0px_rgba(0,0,0,1)]',
+								size === 'sm' ? 'text-4xl' : 'text-6xl',
+								`text-[${scoreColor(clampedScore)}]`
+							)}
+						>
+							{clampedScore}
+						</p>
+					</div>
 					<p
 						className={cn(
 							'text-muted-foreground',

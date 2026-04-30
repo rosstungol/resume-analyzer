@@ -201,7 +201,7 @@ export function UploadForm() {
 
 	return (
 		<>
-			<h2 className='mb-4 font-heading font-semibold text-2xl'>
+			<h2 className='mb-4 font-bold font-heading text-2xl'>
 				upload your resume
 			</h2>
 

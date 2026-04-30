@@ -11,14 +11,14 @@ type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
 }
 
 const baseStyles =
-	'flex justify-center gap-2 rounded-lg border-2 border-mauve-300 p-4 transition-all font-heading font-semibold cursor-pointer'
-const hoverStyles = 'hover:-translate-y-0.5 hover:card-shadow hover:border-ring'
+	'flex justify-center gap-2 rounded-lg border-2 p-2 md:p-4 transition-all font-heading font-semibold cursor-pointer'
+const hoverStyles = 'hover:-translate-y-0.5 hover:card-shadow'
 const disabledStyles = 'disabled:cursor-not-allowed disabled:opacity-50'
 
 const variantStyles: Record<ButtonVariant, string> = {
 	primary: 'bg-primary text-primary-foreground',
 	secondary: 'bg-secondary text-secondary-foreground',
-	destructive: 'bg-rose-400 text-white',
+	destructive: 'bg-destructive text-white',
 }
 
 export function Button({

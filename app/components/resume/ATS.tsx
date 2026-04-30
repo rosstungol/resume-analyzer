@@ -1,26 +1,27 @@
 import { BadgeAlert, BadgeCheck, BadgeX } from 'lucide-react'
 
-type Suggestion = {
-	type: 'good' | 'improve'
-	tip: string
-}
+import type { Tip } from '@/data/types'
 
 type ATSProps = {
 	score: number
-	suggestions: Suggestion[]
+	tips: Pick<Tip, 'type' | 'tip'>[]
 }
 
-export function ATS({ score, suggestions }: ATSProps) {
+export function ATS({ score, tips }: ATSProps) {
+	const tipsId = tips.map((item, index) => ({
+		...item,
+		id: ++index,
+	}))
+
 	const normalizedScore = Math.max(0, Math.min(100, Math.round(score)))
 	const iconSrc =
 		normalizedScore > 69 ? (
-			<BadgeCheck aria-hidden='true' className='size-10 text-green-500' />
+			<BadgeCheck aria-hidden='true' className='size-10 text-success' />
 		) : normalizedScore > 49 ? (
-			<BadgeAlert aria-hidden='true' className='size-10 text-yellow-500' />
+			<BadgeAlert aria-hidden='true' className='size-10 text-warning' />
 		) : (
-			<BadgeX aria-hidden='true' className='size-10 text-red-400' />
+			<BadgeX aria-hidden='true' className='size-10 text-destructive' />
 		)
-
 	const subtitle =
 		normalizedScore > 69
 			? 'Great Job!'
@@ -30,14 +31,14 @@ export function ATS({ score, suggestions }: ATSProps) {
 
 	return (
 		<div className='card card-shadow p-8'>
-			<div className='mb-6 flex items-center gap-4'>
-				{iconSrc}
+			<div className='mb-6 flex items-center gap-2 md:gap-4'>
+				<div className='size-10'>{iconSrc}</div>
 				<div>
 					<h2 className='flex items-center gap-1'>
 						<span className='font-semibold text-2xl'>
 							ATS Score - {normalizedScore}
 						</span>
-						<span className='text-muted-foreground text-xs'>/ 100</span>
+						<span className='text-muted-foreground text-sm'>/ 100</span>
 					</h2>
 				</div>
 			</div>
@@ -50,15 +51,17 @@ export function ATS({ score, suggestions }: ATSProps) {
 				</p>
 
 				<div className='space-y-3'>
-					{suggestions.map((suggestion) => (
-						<div key={suggestion.tip} className='flex items-start gap-3'>
-							{suggestion.type === 'good' ? (
-								<BadgeCheck className='text-green-500' />
-							) : (
-								<BadgeAlert className='text-yellow-500' />
-							)}
+					{tipsId.map((item) => (
+						<div key={item.id} className='flex items-start gap-2'>
+							<div className='size-6'>
+								{item.type === 'good' ? (
+									<BadgeCheck aria-hidden='true' className='text-success' />
+								) : (
+									<BadgeAlert aria-hidden='true' className='text-warning' />
+								)}
+							</div>
 
-							<p>{suggestion.tip}</p>
+							<p>{item.tip}</p>
 						</div>
 					))}
 				</div>
