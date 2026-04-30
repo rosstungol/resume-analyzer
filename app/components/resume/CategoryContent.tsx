@@ -3,9 +3,9 @@ import { cn } from '@/lib/utils'
 import { StatusIcon } from './StatusIcon'
 
 export function CategoryContent({ tips }: { tips: Tip[] }) {
-	const tipsId = tips.map((item) => ({
+	const tipsId = tips.map((item, index) => ({
 		...item,
-		id: crypto.randomUUID(),
+		id: ++index,
 	}))
 
 	return (

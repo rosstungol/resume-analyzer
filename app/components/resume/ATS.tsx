@@ -8,12 +8,12 @@ type ATSProps = {
 }
 
 export function ATS({ score, tips }: ATSProps) {
-	const tipsId = tips.map((item) => ({
+	const tipsId = tips.map((item, index) => ({
 		...item,
-		id: crypto.randomUUID(),
+		id: ++index,
 	}))
-	const normalizedScore = Math.max(0, Math.min(100, Math.round(score)))
 
+	const normalizedScore = Math.max(0, Math.min(100, Math.round(score)))
 	const iconSrc =
 		normalizedScore > 69 ? (
 			<BadgeCheck aria-hidden='true' className='size-10 text-success' />
