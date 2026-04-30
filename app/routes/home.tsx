@@ -106,7 +106,9 @@ export default function HomePage() {
 						</>
 					)}
 
-					{!loadingResumes && resumes.length === 0 && <GridBlankState />}
+					{!loadingResumes && resumes.length === 0 && (
+						<GridBlankState message='Upload your resume to get feedback.' />
+					)}
 				</section>
 			</>
 		)

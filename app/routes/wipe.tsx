@@ -143,7 +143,9 @@ export default function WipePage() {
 					</>
 				)}
 
-				{!isLoading && files.length === 0 && <GridBlankState />}
+				{!isLoading && files.length === 0 && (
+					<GridBlankState message='Upload your resume to see your files here.' />
+				)}
 			</section>
 		</>
 	)
