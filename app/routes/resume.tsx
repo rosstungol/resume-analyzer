@@ -1,4 +1,4 @@
-import { Loader, LogOut, SquareArrowOutUpRight } from 'lucide-react'
+import { ArrowLeft, Loader, SquareArrowOutUpRight } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { Navigate, useParams } from 'react-router'
 import { useShallow } from 'zustand/shallow'
@@ -7,8 +7,9 @@ import { Navbar } from '@/components/layout/Navbar'
 import { ATS } from '@/components/resume/ATS'
 import { Details } from '@/components/resume/Details'
 import { Summary } from '@/components/resume/Summary'
-import { Button } from '@/components/ui/Button'
+import { AuthButton } from '@/components/ui/AuthButton'
 import { LinkButton } from '@/components/ui/LinkButton'
+import { TextLink } from '@/components/ui/TextLink'
 import type { ResumeFeedbackData } from '@/data/types'
 import { usePuterStore } from '@/lib/puter'
 
@@ -99,10 +100,7 @@ export default function ResumePage() {
 			<Navbar>
 				{!isLoading ? (
 					<>
-						<Button variant='secondary' onClick={auth.signOut}>
-							<LogOut />
-							log out
-						</Button>
+						<AuthButton />
 						{resumeFeedbackData.fileUrl && (
 							<LinkButton
 								href={resumeFeedbackData.fileUrl}
@@ -110,7 +108,7 @@ export default function ResumePage() {
 								fileRoute
 							>
 								<SquareArrowOutUpRight />
-								<span>view resume</span>
+								<span>View Resume</span>
 							</LinkButton>
 						)}
 					</>
@@ -120,24 +118,35 @@ export default function ResumePage() {
 			</Navbar>
 
 			<section className='my-8 lg:m-12'>
-				<div className='flex items-center justify-between'>
-					<h2 className='mb-4 font-bold font-heading text-2xl'>
-						resume review
-					</h2>
-				</div>
-				{resumeFeedbackData.feedback && (
-					<div className='flex flex-col gap-8'>
-						<Summary
-							companyName={resumeFeedbackData.companyName}
-							jobTitle={resumeFeedbackData.jobTitle}
-							feedback={resumeFeedbackData.feedback}
-						/>
-						<ATS
-							score={resumeFeedbackData.feedback.ATS.score || 0}
-							tips={resumeFeedbackData.feedback.ATS.tips}
-						/>
-						<Details feedback={resumeFeedbackData.feedback} />
-					</div>
+				{!isLoading && resumeFeedbackData.feedback && (
+					<>
+						<div className='mb-4 flex flex-col items-center justify-between md:flex-row'>
+							<div>
+								<h2 className='font-bold font-heading text-2xl'>
+									Resume Review
+								</h2>
+							</div>
+							<p className='font-semibold text-muted-foreground'>
+								<TextLink href='/'>
+									<ArrowLeft />
+									<span className='font-semibold'>Back to home</span>
+								</TextLink>
+							</p>
+						</div>
+
+						<div className='flex flex-col gap-8'>
+							<Summary
+								companyName={resumeFeedbackData.companyName}
+								jobTitle={resumeFeedbackData.jobTitle}
+								feedback={resumeFeedbackData.feedback}
+							/>
+							<ATS
+								score={resumeFeedbackData.feedback.ATS.score || 0}
+								tips={resumeFeedbackData.feedback.ATS.tips}
+							/>
+							<Details feedback={resumeFeedbackData.feedback} />
+						</div>
+					</>
 				)}
 			</section>
 		</>
