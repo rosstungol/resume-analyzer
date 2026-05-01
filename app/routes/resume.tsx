@@ -120,7 +120,7 @@ export default function ResumePage() {
 			<section className='my-8 lg:m-12'>
 				{!isLoading && resumeFeedbackData.feedback && (
 					<>
-						<div className='mb-4 flex flex-col items-center justify-between md:flex-row'>
+						<div className='mb-4 flex flex-col-reverse items-center justify-between gap-4 md:flex-row'>
 							<div>
 								<h2 className='font-bold font-heading text-2xl'>
 									Resume Review
