@@ -1,7 +1,9 @@
 import { ArrowUpRight, FileUp, Loader } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { useShallow } from 'zustand/shallow'
+
 import { GridBlankState } from '@/components/home/GridBlankState'
+import { HeroSection } from '@/components/home/HeroSection'
 import { ResumeGrid } from '@/components/home/ResumeGrid'
 import { Navbar } from '@/components/layout/Navbar'
 import { AuthButton } from '@/components/ui/AuthButton'
@@ -93,7 +95,7 @@ export default function HomePage() {
 
 					{!loadingResumes && resumes.length > 0 && (
 						<>
-							<div className='mb-4 flex flex-col items-center justify-between md:flex-row'>
+							<div className='mb-4 flex flex-col-reverse items-center justify-between gap-4 md:flex-row'>
 								<h2 className='font-bold font-heading text-2xl'>
 									Resume Reviews
 								</h2>
@@ -123,9 +125,7 @@ export default function HomePage() {
 				)}
 			</Navbar>
 
-			<section className='py-12'>
-				{!isLoading && <div>hero section</div>}
-			</section>
+			<section className='py-12'>{!isLoading && <HeroSection />}</section>
 		</>
 	)
 }
