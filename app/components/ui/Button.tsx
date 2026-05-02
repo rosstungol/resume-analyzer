@@ -11,7 +11,7 @@ type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
 }
 
 const baseStyles =
-	'flex justify-center gap-2 rounded-lg border-2 p-2 md:p-4 transition-all font-heading font-semibold cursor-pointer'
+	'flex-center gap-2 rounded-lg border-2 p-2 md:py-3 transition-all font-heading font-semibold cursor-pointer'
 const hoverStyles = 'hover:-translate-y-0.5 hover:card-shadow'
 const disabledStyles = 'disabled:cursor-not-allowed disabled:opacity-50'
 
