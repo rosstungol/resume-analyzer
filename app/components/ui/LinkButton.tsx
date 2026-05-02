@@ -13,7 +13,7 @@ type LinkButtonProps = {
 }
 
 const baseStyles =
-	'flex-center gap-2 rounded-lg border-2 px-2 py-3  transition-all font-semibold font-heading cursor-pointer'
+	'flex-center gap-2 rounded-lg border-2 p-2 md:py-3 transition-all font-semibold font-heading cursor-pointer'
 const hoverStyles = 'hover:-translate-y-0.5 hover:card-shadow'
 const variantStyles: Record<LinkButtonVariant, string> = {
 	primary: 'bg-primary text-primary-foreground',
