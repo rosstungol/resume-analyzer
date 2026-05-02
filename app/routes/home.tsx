@@ -119,13 +119,15 @@ export default function HomePage() {
 		<>
 			<Navbar>
 				{!isLoading ? (
-					<AuthButton />
+					<div className='hidden md:inline-block'>
+						<AuthButton />
+					</div>
 				) : (
 					<Loader className='size-8 animate-spin text-accent-foreground' />
 				)}
 			</Navbar>
 
-			<section className='py-12'>{!isLoading && <HeroSection />}</section>
+			{!isLoading && <HeroSection />}
 		</>
 	)
 }
