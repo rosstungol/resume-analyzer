@@ -1,10 +1,11 @@
 import { SquareArrowOutUpRight } from 'lucide-react'
 import { useRef } from 'react'
-import { useIsVisible } from '@/hooks/useIsIntersecting'
+
+import { useIsVisible } from '@/hooks/useIsVisible'
 import { cn } from '@/lib/utils'
 
 export function FeaturesSection() {
-	const textRef = useRef(null)
+	const textRef = useRef<HTMLParagraphElement>(null)
 	const isVisible = useIsVisible(textRef)
 
 	return (

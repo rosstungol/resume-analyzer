@@ -1,5 +1,6 @@
 import { useRef } from 'react'
-import { useIsVisible } from '@/hooks/useIsIntersecting'
+
+import { useIsVisible } from '@/hooks/useIsVisible'
 import { cn } from '@/lib/utils'
 
 type InstructionStepProps = {
@@ -9,7 +10,7 @@ type InstructionStepProps = {
 }
 
 function InstructionStep({ number, title, body }: InstructionStepProps) {
-	const textRef = useRef(null)
+	const textRef = useRef<HTMLParagraphElement>(null)
 	const isVisible = useIsVisible(textRef)
 
 	return (
