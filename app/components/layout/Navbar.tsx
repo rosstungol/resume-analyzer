@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react'
 import { Link } from 'react-router'
+
 import { usePuterStore } from '@/lib/puter'
 import { cn } from '@/lib/utils'
 
@@ -14,7 +15,7 @@ export function Navbar({ children }: { children?: ReactNode }) {
 			)}
 		>
 			<Link to='/'>
-				<h1 className='font-black font-heading text-4xl text-accent-foreground text-stroke [text-shadow:3px_3px_0px_rgba(70,57,71,1)]'>
+				<h1 className='heading-shadow font-black font-heading text-4xl text-accent-foreground text-stroke'>
 					resmyze
 				</h1>
 			</Link>

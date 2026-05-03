@@ -117,6 +117,14 @@
 	paint-order: stroke fill;
 }
 
+@utility heading-shadow {
+	@apply [text-shadow:3px_3px_0px_rgba(70,57,71,1)];
+}
+
+@utility heading-shadow-sm {
+	@apply [text-shadow:1px_1px_0px_rgba(70,57,71,1)];
+}
+
 @utility flex-center {
 	@apply flex items-center justify-center;
 }
