@@ -1,3 +1,7 @@
+import { useRef } from 'react'
+import { useIsVisible } from '@/hooks/useIsIntersecting'
+import { cn } from '@/lib/utils'
+
 type InstructionStepProps = {
 	number: number
 	title: string
@@ -5,8 +9,17 @@ type InstructionStepProps = {
 }
 
 function InstructionStep({ number, title, body }: InstructionStepProps) {
+	const textRef = useRef(null)
+	const isVisible = useIsVisible(textRef)
+
 	return (
-		<li className='card card-shadow col-span-2 md:last:col-span-2 md:last:col-start-2 lg:last:col-start-auto'>
+		<li
+			className={cn(
+				'card card-shadow col-span-2 md:last:col-span-2 md:last:col-start-2 lg:last:col-start-auto',
+				'transition duration-200 ease-in',
+				isVisible ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'
+			)}
+		>
 			<div className='space-y-4 px-10 pt-6 pb-10 lg:px-6 xl:px-10'>
 				<h3>
 					<span className='heading-shadow mr-3 font-bold font-heading text-5xl text-accent-foreground text-stroke-sm'>
@@ -14,7 +27,9 @@ function InstructionStep({ number, title, body }: InstructionStepProps) {
 					</span>
 					<span className='font-bold font-heading text-xl'>{title}</span>
 				</h3>
-				<p className='text-balance'>{body}</p>
+				<p ref={textRef} className='text-balance'>
+					{body}
+				</p>
 			</div>
 		</li>
 	)
@@ -22,7 +37,7 @@ function InstructionStep({ number, title, body }: InstructionStepProps) {
 
 export function InstructionsSection() {
 	return (
-		<section className='my-24 lg:mx-8'>
+		<section className='mt-20 mb-12 lg:mx-8'>
 			<h2 className='heading-shadow-sm mb-4 text-center font-bold font-heading text-3xl text-ring text-stroke-sm'>
 				How it works
 			</h2>

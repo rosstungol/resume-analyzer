@@ -1,8 +1,8 @@
 import { ArrowUpRight, FileUp, Loader } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { useShallow } from 'zustand/shallow'
-
-import { AnalysisDetails } from '@/components/home/AnalysisDetails'
+import { Divider } from '@/components/home/Divider'
+import { FeaturesSection } from '@/components/home/FeaturesSection'
 import { GridBlankState } from '@/components/home/GridBlankState'
 import { HeroSection } from '@/components/home/HeroSection'
 import { InstructionsSection } from '@/components/home/InstructionsSection'
@@ -133,7 +133,8 @@ export default function HomePage() {
 				<>
 					<HeroSection />
 					<InstructionsSection />
-					<AnalysisDetails />
+					<Divider />
+					<FeaturesSection />
 				</>
 			)}
 		</>

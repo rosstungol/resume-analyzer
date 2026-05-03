@@ -33,6 +33,7 @@
 	--color-popover: var(--popover);
 	--color-card-foreground: var(--card-foreground);
 	--color-card: var(--card);
+	--color-card-highlight: var(--card-highlight);
 	--color-foreground: var(--foreground);
 	--color-background: var(--background);
 	--radius-sm: calc(var(--radius) * 0.6);
@@ -48,6 +49,7 @@
 	--background: oklch(0.983 0.0086 84.6);
 	--foreground: oklch(0.263 0.024 320.12);
 	--card: oklch(1 0 0);
+	--card-highlight: oklch(0.9568 0.0214 285.99);
 	--card-foreground: var(--foreground);
 	--popover: oklch(1 0 0);
 	--popover-foreground: var(--foreground);
@@ -68,12 +70,14 @@
 	--radius: 0.625rem;
 	--shadow-card: var(--ring);
 	--text-stroke: oklch(0.364 0.0293 323.9);
+	--shadow-heading: rgba(70, 57, 71, 1);
 }
 
 .dark {
 	--background: oklch(0.145 0 0);
 	--foreground: oklch(0.985 0 0);
 	--card: oklch(0.205 0 0);
+	--card-highlight: oklch(0.263 0.024 320.12);
 	--card-foreground: oklch(0.985 0 0);
 	--popover: oklch(0.205 0 0);
 	--popover-foreground: oklch(0.985 0 0);
@@ -93,6 +97,7 @@
 	--ring: var(--primary);
 	--shadow-card: rgb(0 0 0 / 60%);
 	--text-stroke: oklch(0.364 0.0293 323.9);
+	--shadow-heading: rgba(180, 160, 180, 0.4);
 }
 
 @layer base {
@@ -104,6 +109,66 @@
 	}
 	html {
 		@apply font-sans;
+	}
+
+	::selection {
+		background: #f4b3d8;
+		color: var(--foreground);
+	}
+}
+
+@layer components {
+	.squiggly-line {
+		--wave-size: 6px;
+		--line-thickness: 4px;
+		--wave-curvature: 0.4;
+
+		--radius: calc(
+			var(--wave-size) *
+			sqrt(var(--wave-curvature) * var(--wave-curvature) + 1) +
+			var(--line-thickness) /
+			2
+		);
+
+		--mask-gradient-stops:
+			#0000 calc(99% - var(--line-thickness)),
+			#000 calc(101% - var(--line-thickness)) 99%, #0000 101%;
+
+		height: calc(2 * var(--radius));
+		width: var(--line-width, 194px);
+
+		mask:
+			radial-gradient(
+				var(--radius) at left 50% bottom
+					calc(-1 * var(--wave-curvature) * var(--wave-size)),
+				var(--mask-gradient-stops)
+			)
+			calc(50% - 2 * var(--wave-size))
+			calc(50% - var(--wave-size) / 2 - var(--line-thickness) / 2) /
+			calc(4 * var(--wave-size)) calc(var(--wave-size) + var(--line-thickness))
+			repeat-x,
+			radial-gradient(
+				var(--radius) at left 50% top
+					calc(-1 * var(--wave-curvature) * var(--wave-size)),
+				var(--mask-gradient-stops)
+			)
+			50% calc(50% + var(--wave-size) / 2 + var(--line-thickness) / 2) /
+			calc(4 * var(--wave-size)) calc(var(--wave-size) + var(--line-thickness))
+			repeat-x;
+
+		background: var(--line-color, currentColor);
+
+		&.-main {
+			--line-thickness: 4px;
+			--line-color: var(--accent-foreground);
+			--line-width: 194px;
+		}
+
+		&.-stroke {
+			--line-thickness: 6px;
+			--line-color: var(--foreground);
+			--line-width: 196px;
+		}
 	}
 }
 
@@ -118,11 +183,11 @@
 }
 
 @utility heading-shadow {
-	@apply [text-shadow:3px_3px_0px_rgba(70,57,71,1)];
+	text-shadow: 3px 3px 0px var(--shadow-heading);
 }
 
 @utility heading-shadow-sm {
-	@apply [text-shadow:1px_1px_0px_rgba(70,57,71,1)];
+	text-shadow: 1px 1px 0px var(--shadow-heading);
 }
 
 @utility flex-center {
@@ -134,7 +199,7 @@
 }
 
 @utility card-shadow {
-	@apply shadow-[4px_4px_0px_0px_var(--shadow-card)];
+	box-shadow: 4px 4px 0px 0px var(--shadow-card);
 }
 
 @utility form-input {
