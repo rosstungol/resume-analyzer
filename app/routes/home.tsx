@@ -1,9 +1,11 @@
 import { ArrowUpRight, FileUp, Loader } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { useShallow } from 'zustand/shallow'
-
+import { Divider } from '@/components/home/Divider'
+import { FeaturesSection } from '@/components/home/FeaturesSection'
 import { GridBlankState } from '@/components/home/GridBlankState'
 import { HeroSection } from '@/components/home/HeroSection'
+import { InstructionsSection } from '@/components/home/InstructionsSection'
 import { ResumeGrid } from '@/components/home/ResumeGrid'
 import { Navbar } from '@/components/layout/Navbar'
 import { AuthButton } from '@/components/ui/AuthButton'
@@ -127,7 +129,14 @@ export default function HomePage() {
 				)}
 			</Navbar>
 
-			{!isLoading && <HeroSection />}
+			{!isLoading && (
+				<>
+					<HeroSection />
+					<InstructionsSection />
+					<Divider />
+					<FeaturesSection />
+				</>
+			)}
 		</>
 	)
 }
