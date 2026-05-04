@@ -118,6 +118,10 @@ export default function ResumePage() {
 			</Navbar>
 
 			<section className='my-8 lg:m-12'>
+				{isLoading && (
+					<Loader className='m-auto size-16 animate-spin text-accent-foreground' />
+				)}
+
 				{!isLoading && resumeFeedbackData.feedback && (
 					<>
 						<div className='mb-4 flex flex-col-reverse items-center justify-between gap-4 md:flex-row'>

@@ -1,4 +1,4 @@
-import { FileSearchCorner, FileUp, ListRestart } from 'lucide-react'
+import { ArrowLeft, FileSearchCorner, FileUp, ListRestart } from 'lucide-react'
 import { type SyntheticEvent, useState } from 'react'
 import { useNavigate } from 'react-router'
 import { useShallow } from 'zustand/shallow'
@@ -10,6 +10,7 @@ import type { AIResponse } from '@/data/types/puter'
 import { usePuterStore } from '@/lib/puter'
 import { cn } from '@/lib/utils'
 import { Button } from '../ui/Button'
+import { TextLink } from '../ui/TextLink'
 import { FileUploader } from './FileUploader'
 import { ResumeImage } from './ResumeImage'
 
@@ -208,126 +209,144 @@ export function UploadForm() {
 		)
 
 	return (
-		<div className='card card-shadow p-6 lg:p-10'>
-			<form
-				id='upload-form'
-				onSubmit={handleSubmit}
-				className='flex flex-col gap-8 md:flex-row lg:gap-12'
-			>
-				<div className='flex-1'>
-					<div
-						className={cn(
-							'flex flex-col gap-2',
-							formErrors.companyName ? 'mb-4' : 'mb-11'
-						)}
-					>
-						<label htmlFor='companyName' className='font-semibold text-sm'>
-							Company Name
-						</label>
-						<input
-							type='text'
-							id='companyName'
-							name='companyName'
-							placeholder='XYZ Company'
-							value={formData.companyName}
-							onChange={handleChange}
-							className='form-input'
-						/>
-						{formErrors.companyName && (
-							<p className='text-destructive text-sm'>
-								{formErrors.companyName}
-							</p>
-						)}
-					</div>
-					<div
-						className={cn(
-							'flex flex-col gap-2',
-							formErrors.jobTitle ? 'mb-4' : 'mb-11'
-						)}
-					>
-						<label htmlFor='jobTitle' className='font-semibold text-sm'>
-							Job Title
-						</label>
-						<input
-							type='text'
-							id='jobTitle'
-							name='jobTitle'
-							placeholder='Project Manager'
-							value={formData.jobTitle}
-							onChange={handleChange}
-							className='form-input'
-						/>
-						{formErrors.jobTitle && (
-							<p className='text-destructive text-sm'>{formErrors.jobTitle}</p>
-						)}
-					</div>
-					<div className='flex flex-col gap-2'>
-						<label htmlFor='jobDescription' className='font-semibold text-sm'>
-							Job Description
-						</label>
-						<p className='text-muted-foreground text-sm'>
-							Copy the entire job description from the job posting and paste it
-							here.
-						</p>
-						<textarea
-							rows={4}
-							id='jobDescription'
-							name='jobDescription'
-							placeholder='Job summary, responsibilities, requirements'
-							value={formData.jobDescription}
-							onChange={handleChange}
-							className='form-input flex-1 resize-none'
-						/>
-						{formErrors.jobDescription && (
-							<p className='text-destructive text-sm'>
-								{formErrors.jobDescription}
-							</p>
-						)}
-					</div>
+		<>
+			<div className='mb-4 flex flex-col-reverse items-center justify-between gap-4 md:flex-row'>
+				<div>
+					<h2 className='font-bold font-heading text-2xl'>
+						Upload your resume
+					</h2>
 				</div>
-				<div className='flex flex-1 flex-col justify-between gap-4'>
-					<div className='flex flex-col gap-2'>
-						<label htmlFor='uploader' className='font-semibold text-sm'>
-							Upload Resume
-						</label>
-						<FileUploader
-							inputId='uploader'
-							file={formData.file}
-							onFileSelect={handleFileSelect}
-						/>
-						{formErrors.file && (
-							<p className='text-destructive text-sm'>{formErrors.file}</p>
-						)}
-					</div>
-					<div
-						className={cn(
-							'flex flex-row gap-3',
-							formErrors.jobDescription && 'md:mb-7'
-						)}
-					>
-						<Button
-							type='reset'
-							variant='secondary'
-							onClick={() => {
-								setFormData(INITIAL_FORM_DATA)
-								setFormErrors({})
-							}}
+				<p className='font-semibold text-muted-foreground'>
+					<TextLink href='/'>
+						<ArrowLeft />
+						<span className='font-semibold'>Back to home</span>
+					</TextLink>
+				</p>
+			</div>
+
+			<div className='card card-shadow p-6 lg:p-10'>
+				<form
+					id='upload-form'
+					onSubmit={handleSubmit}
+					className='flex flex-col gap-8 md:flex-row lg:gap-12'
+				>
+					<div className='flex-1'>
+						<div
+							className={cn(
+								'flex flex-col gap-2',
+								formErrors.companyName ? 'mb-4' : 'mb-11'
+							)}
 						>
-							<ListRestart />
-							<span className='hidden sm:inline'>Reset</span>
-						</Button>
-						<Button
-							type='submit'
-							variant='primary'
-							className='flex-1'
-							disabled={isProcessing}
+							<label htmlFor='companyName' className='font-semibold text-sm'>
+								Company Name
+							</label>
+							<input
+								type='text'
+								id='companyName'
+								name='companyName'
+								placeholder='XYZ Company'
+								value={formData.companyName}
+								onChange={handleChange}
+								className='form-input'
+							/>
+							{formErrors.companyName && (
+								<p className='text-destructive text-sm'>
+									{formErrors.companyName}
+								</p>
+							)}
+						</div>
+						<div
+							className={cn(
+								'flex flex-col gap-2',
+								formErrors.jobTitle ? 'mb-4' : 'mb-11'
+							)}
 						>
-							<FileSearchCorner />
-							<span>Analyze Resume</span>
-						</Button>
+							<label htmlFor='jobTitle' className='font-semibold text-sm'>
+								Job Title
+							</label>
+							<input
+								type='text'
+								id='jobTitle'
+								name='jobTitle'
+								placeholder='Project Manager'
+								value={formData.jobTitle}
+								onChange={handleChange}
+								className='form-input'
+							/>
+							{formErrors.jobTitle && (
+								<p className='text-destructive text-sm'>
+									{formErrors.jobTitle}
+								</p>
+							)}
+						</div>
+						<div className='flex flex-col gap-2'>
+							<label htmlFor='jobDescription' className='font-semibold text-sm'>
+								Job Description
+							</label>
+							<p className='text-muted-foreground text-sm'>
+								Copy the entire job description from the job posting and paste
+								it here.
+							</p>
+							<textarea
+								rows={4}
+								id='jobDescription'
+								name='jobDescription'
+								placeholder='Job summary, responsibilities, requirements'
+								value={formData.jobDescription}
+								onChange={handleChange}
+								className='form-input flex-1 resize-none'
+							/>
+							{formErrors.jobDescription && (
+								<p className='text-destructive text-sm'>
+									{formErrors.jobDescription}
+								</p>
+							)}
+						</div>
 					</div>
-				</div>
-			</form>
-		</div>
+					<div className='flex flex-1 flex-col justify-between gap-4'>
+						<div className='flex flex-col gap-2'>
+							<label htmlFor='uploader' className='font-semibold text-sm'>
+								Upload Resume
+							</label>
+							<FileUploader
+								inputId='uploader'
+								file={formData.file}
+								onFileSelect={handleFileSelect}
+							/>
+							{formErrors.file && (
+								<p className='text-destructive text-sm'>{formErrors.file}</p>
+							)}
+						</div>
+						<div
+							className={cn(
+								'flex flex-row gap-3',
+								formErrors.jobDescription && 'md:mb-7'
+							)}
+						>
+							<Button
+								type='reset'
+								variant='secondary'
+								onClick={() => {
+									setFormData(INITIAL_FORM_DATA)
+									setFormErrors({})
+								}}
+							>
+								<ListRestart />
+								<span className='hidden sm:inline'>Reset</span>
+							</Button>
+							<Button
+								type='submit'
+								variant='primary'
+								className='flex-1'
+								disabled={isProcessing}
+							>
+								<FileSearchCorner />
+								<span>Analyze Resume</span>
+							</Button>
+						</div>
+					</div>
+				</form>
+			</div>
+		</>
 	)
 }
