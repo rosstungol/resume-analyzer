@@ -116,7 +116,12 @@ export function UploadForm() {
 		const feedbackText =
 			typeof feedback.message.content === 'string'
 				? feedback.message.content
-				: feedback.message.content?.[0]?.text
+				: Array.isArray(feedback.message.content) &&
+						typeof feedback.message.content[0] === 'object' &&
+						feedback.message.content[0] !== null &&
+						'text' in feedback.message.content[0]
+					? (feedback.message.content[0] as { text: string }).text
+					: undefined
 
 		if (!feedbackText) {
 			setStatusText('Error: Empty response from AI')

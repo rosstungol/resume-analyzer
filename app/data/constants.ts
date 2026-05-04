@@ -1,5 +1,5 @@
 export const AIResponseFormat = `
-      interface Feedback {
+      type Feedback = {
       overallScore: number; //max 100
       ATS: {
         score: number; //rate based on ATS suitability
