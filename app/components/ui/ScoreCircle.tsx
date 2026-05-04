@@ -5,7 +5,7 @@ type ScoreCircleProps = {
 	size: 'sm' | 'lg'
 }
 
-export function ScoreCircle({ score = 75, size }: ScoreCircleProps) {
+export function ScoreCircle({ score, size }: ScoreCircleProps) {
 	const clampedScore = Number.isFinite(score)
 		? Math.max(0, Math.min(100, score))
 		: 0
