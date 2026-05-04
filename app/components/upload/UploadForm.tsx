@@ -11,6 +11,7 @@ import { usePuterStore } from '@/lib/puter'
 import { cn } from '@/lib/utils'
 import { Button } from '../ui/Button'
 import { FileUploader } from './FileUploader'
+import { ResumeImage } from './ResumeImage'
 
 const INITIAL_FORM_DATA: UploadFormData = {
 	companyName: '',
@@ -180,7 +181,9 @@ export function UploadForm() {
 			<div className='card card-shadow mx-auto w-fit min-w-80 space-y-4 p-8 text-center'>
 				<h2 className='font-heading font-semibold text-2xl'>{statusText}</h2>
 				{!isProcessingError ? (
-					<FileSearchCorner className='m-auto size-16 animate-pulse text-accent-foreground' />
+					<div className='m-auto size-60'>
+						<ResumeImage />
+					</div>
 				) : (
 					<Button
 						onClick={() => {
