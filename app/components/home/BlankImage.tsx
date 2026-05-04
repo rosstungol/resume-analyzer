@@ -1,11 +1,14 @@
 import type { SVGProps } from 'react'
 
-export const BlankImage = (props: SVGProps<SVGSVGElement>) => (
+export const BlankImage = ({
+	className,
+	...props
+}: SVGProps<SVGSVGElement>) => (
 	<svg
-		className='animated'
-		id='freepik_stories-empty'
-		viewBox='0 0 500 500'
 		{...props}
+		id='freepik_stories-empty'
+		className={['animated', className].filter(Boolean).join(' ')}
+		viewBox='0 0 500 500'
 	>
 		<title>Blank</title>
 		<style>

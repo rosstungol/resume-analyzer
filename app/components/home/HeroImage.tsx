@@ -1,11 +1,11 @@
 import type { SVGProps } from 'react'
 
-export const HeroImage = (props: SVGProps<SVGSVGElement>) => (
+export const HeroImage = ({ className, ...props }: SVGProps<SVGSVGElement>) => (
 	<svg
-		className='animated'
-		id='freepik_stories-online-resume'
-		viewBox='0 0 500 500'
 		{...props}
+		id='freepik_stories-online-resume'
+		className={['animated', className].filter(Boolean).join(' ')}
+		viewBox='0 0 500 500'
 	>
 		<title>Resume</title>
 		<style>
