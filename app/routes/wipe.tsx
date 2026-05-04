@@ -86,7 +86,7 @@ export default function WipePage() {
 							disabled={files.length === 0}
 						>
 							<Trash />
-							Delete Files
+							Delete All Files
 						</Button>
 					</>
 				) : (
