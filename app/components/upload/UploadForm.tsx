@@ -117,12 +117,13 @@ export function UploadForm() {
 		const feedbackText =
 			typeof feedback.message.content === 'string'
 				? feedback.message.content
-				: Array.isArray(feedback.message.content) &&
-						typeof feedback.message.content[0] === 'object' &&
-						feedback.message.content[0] !== null &&
-						typeof (feedback.message.content[0] as Record<string, unknown>)
-							.text === 'string'
-					? (feedback.message.content[0] as { text: string }).text
+				: Array.isArray(feedback.message.content)
+					? feedback.message.content.find(
+							(part): part is { text: string } =>
+								typeof part === 'object' &&
+								part !== null &&
+								typeof (part as Record<string, unknown>).text === 'string'
+						)?.text
 					: undefined
 
 		if (!feedbackText) {
