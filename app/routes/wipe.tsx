@@ -31,8 +31,11 @@ export default function WipePage() {
 	const [openModal, setOpenModal] = useState(false)
 
 	useEffect(() => {
+		let cancelled = false
+
 		if (!auth.isAuthenticated) {
 			setFiles([])
+			setLoadingFiles(false)
 			return
 		}
 
@@ -42,17 +45,21 @@ export default function WipePage() {
 			try {
 				const files = (await fs.readDir('./')) as FSItem[]
 
-				setFiles(files)
+				if (!cancelled) setFiles(files)
 			} catch (error) {
 				console.error('Failed to load files:', error)
 
-				setFiles([])
+				if (!cancelled) setFiles([])
 			} finally {
-				setLoadingFiles(false)
+				if (!cancelled) setLoadingFiles(false)
 			}
 		}
 
 		loadFiles()
+
+		return () => {
+			cancelled = true
+		}
 	}, [auth.isAuthenticated, fs])
 
 	const handleDelete = async () => {
