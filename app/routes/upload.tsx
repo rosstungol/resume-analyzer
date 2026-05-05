@@ -1,10 +1,9 @@
-import { ArrowLeft, Loader } from 'lucide-react'
+import { Loader } from 'lucide-react'
 import { Navigate } from 'react-router'
 import { useShallow } from 'zustand/shallow'
 
 import { Navbar } from '@/components/layout/Navbar'
 import { AuthButton } from '@/components/ui/AuthButton'
-import { TextLink } from '@/components/ui/TextLink'
 import { UploadForm } from '@/components/upload/UploadForm'
 import { usePuterStore } from '@/lib/puter'
 
@@ -41,20 +40,11 @@ export default function UploadPage() {
 			</Navbar>
 
 			<section className='my-8 lg:m-12'>
-				<div className='mb-4 flex flex-col-reverse items-center justify-between gap-4 md:flex-row'>
-					<div>
-						<h2 className='font-bold font-heading text-2xl'>
-							Upload your resume
-						</h2>
-					</div>
-					<p className='font-semibold text-muted-foreground'>
-						<TextLink href='/'>
-							<ArrowLeft />
-							<span className='font-semibold'>Back to home</span>
-						</TextLink>
-					</p>
-				</div>
-				<UploadForm />
+				{isLoading && (
+					<Loader className='m-auto size-16 animate-spin text-accent-foreground' />
+				)}
+
+				{!isLoading && auth.isAuthenticated && <UploadForm />}
 			</section>
 		</>
 	)

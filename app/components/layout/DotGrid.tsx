@@ -5,9 +5,13 @@ import { useCallback, useEffect, useMemo, useRef } from 'react'
 
 gsap.registerPlugin(InertiaPlugin)
 
-const throttle = (func: (...args: any[]) => void, limit: number) => {
+const throttle = <T extends unknown[]>(
+	func: (...args: T) => void,
+	limit: number
+) => {
 	let lastCall = 0
-	return function (this: any, ...args: any[]) {
+
+	return function (this: unknown, ...args: T) {
 		const now = performance.now()
 		if (now - lastCall >= limit) {
 			lastCall = now
@@ -16,7 +20,7 @@ const throttle = (func: (...args: any[]) => void, limit: number) => {
 	}
 }
 
-interface Dot {
+type Dot = {
 	cx: number
 	cy: number
 	xOffset: number
@@ -24,7 +28,7 @@ interface Dot {
 	_inertiaApplied: boolean
 }
 
-export interface DotGridProps {
+export type DotGridProps = {
 	dotSize?: number
 	gap?: number
 	baseColor?: string

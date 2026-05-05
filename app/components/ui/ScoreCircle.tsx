@@ -1,12 +1,11 @@
 import { cn, scoreColor } from '@/lib/utils'
 
-export function ScoreCircle({
-	score = 75,
-	size,
-}: {
+type ScoreCircleProps = {
 	score: number
 	size: 'sm' | 'lg'
-}) {
+}
+
+export function ScoreCircle({ score, size }: ScoreCircleProps) {
 	const clampedScore = Number.isFinite(score)
 		? Math.max(0, Math.min(100, score))
 		: 0
@@ -52,10 +51,10 @@ export function ScoreCircle({
 					<div className='text-stroke-sm'>
 						<p
 							className={cn(
-								'font-bold [text-shadow:1px_1px_0px_rgba(0,0,0,1)]',
-								size === 'sm' ? 'text-4xl' : 'text-6xl',
-								`text-[${scoreColor(clampedScore)}]`
+								'heading-shadow-sm font-bold',
+								size === 'sm' ? 'text-4xl' : 'text-6xl'
 							)}
+							style={{ color: scoreColor(clampedScore) }}
 						>
 							{clampedScore}
 						</p>

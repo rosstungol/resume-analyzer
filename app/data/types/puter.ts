@@ -44,7 +44,7 @@ export type PuterChatOptions = {
 		function: {
 			name: string
 			description: string
-			parameters: { type: string; properties: {} }
+			parameters: { type: string; properties: object }
 		}[]
 	}
 }
@@ -53,11 +53,11 @@ export type AIResponse = {
 	index: number
 	message: {
 		role: string
-		content: string | any[]
+		content: string | unknown[]
 		refusal: null | string
-		annotations: any[]
+		annotations: unknown[]
 	}
-	logprobs: null | any
+	logprobs: null | unknown
 	finish_reason: string
 	usage: {
 		type: string
