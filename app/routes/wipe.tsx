@@ -25,16 +25,35 @@ export default function WipePage() {
 
 	const navigate = useNavigate()
 	const [files, setFiles] = useState<FSItem[]>([])
+	const [loadingFiles, setLoadingFiles] = useState<boolean>(
+		auth.isAuthenticated
+	)
 	const [openModal, setOpenModal] = useState(false)
 
 	useEffect(() => {
+		if (!auth.isAuthenticated) {
+			setFiles([])
+			return
+		}
+
 		const loadFiles = async () => {
-			const files = (await fs.readDir('./')) as FSItem[]
-			setFiles(files)
+			setLoadingFiles(true)
+
+			try {
+				const files = (await fs.readDir('./')) as FSItem[]
+
+				setFiles(files)
+			} catch (error) {
+				console.error('Failed to load files:', error)
+
+				setFiles([])
+			} finally {
+				setLoadingFiles(false)
+			}
 		}
 
 		loadFiles()
-	}, [fs])
+	}, [auth.isAuthenticated, fs])
 
 	const handleDelete = async () => {
 		const loadFiles = async () => {
@@ -103,11 +122,11 @@ export default function WipePage() {
 			)}
 
 			<section className='my-8 lg:m-12'>
-				{isLoading && (
+				{loadingFiles && (
 					<Loader className='m-auto size-16 animate-spin text-accent-foreground' />
 				)}
 
-				{!isLoading && files.length > 0 && (
+				{!loadingFiles && files.length > 0 && (
 					<>
 						<div className='mb-4 flex flex-col-reverse items-center justify-between gap-4 md:flex-row'>
 							<div>
@@ -143,7 +162,7 @@ export default function WipePage() {
 					</>
 				)}
 
-				{!isLoading && files.length === 0 && (
+				{!loadingFiles && files.length === 0 && (
 					<GridBlankState message='Upload your resume to see your files here.' />
 				)}
 			</section>
