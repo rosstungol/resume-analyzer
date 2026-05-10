@@ -17,7 +17,7 @@ export function CategoryHeader({ title, categoryScore }: CategoryHeaderProps) {
 				<StatusIcon type={normalizedScore > 69 ? 'good' : 'improve'} />
 			</div>
 			<div className='flex flex-col gap-2 md:flex-row md:items-center md:gap-6'>
-				<h2 className='flex items-center gap-2'>
+				<h2 className='flex items-center gap-2 font-heading'>
 					<span className='font-semibold text-2xl'>
 						{title} - {normalizedScore}
 					</span>
