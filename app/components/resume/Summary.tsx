@@ -12,10 +12,10 @@ function Category({ title, score }: CategoryProps) {
 		<div>
 			<div className='flex justify-between'>
 				<div>
-					<h3 className='font-semibold text-lg'>{title}</h3>
+					<h3 className='font-heading font-semibold text-lg'>{title}</h3>
 					<ScoreBadge score={score} />
 				</div>
-				<p className='flex items-center gap-1'>
+				<p className='flex items-center gap-1 font-heading'>
 					<span className='font-semibold text-2xl'>{score}</span>
 					<span className='text-muted-foreground text-xs'>/ 100</span>
 				</p>

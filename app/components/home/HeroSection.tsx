@@ -14,10 +14,10 @@ export function HeroSection() {
 	)
 
 	return (
-		<section className='relative mx-4 my-6 flex h-fit flex-col-reverse gap-4 md:my-12 md:flex-row lg:mx-12 xl:mx-24 2xl:mx-32'>
+		<section className='relative mx-4 my-6 flex h-fit flex-col-reverse gap-4 md:mx-12 md:my-12 md:flex-row lg:my-2 xl:mx-20 2xl:mx-32'>
 			<div className='lg:flex-1'>
-				<div className='lg:my-12 xl:my-24'>
-					<h2 className='heading-shadow-sm mb-4 text-balance text-center font-extrabold font-heading text-4xl text-ring text-stroke-sm sm:mb-6 md:max-w-9/12 md:text-left lg:max-w-11/12 lg:text-5xl xl:max-w-fit xl:text-6xl 2xl:text-7xl'>
+				<div className='lg:my-12 xl:my-20'>
+					<h2 className='heading-shadow-sm mb-4 text-balance text-center font-extrabold font-heading text-5xl text-ring text-stroke-sm sm:mb-6 md:max-w-9/12 md:text-left lg:max-w-11/12 lg:text-7xl xl:max-w-fit xl:text-8xl'>
 						Give Your Resume a Glow-Up ✨
 					</h2>
 					<p className='mb-6 text-balance text-center sm:text-xl md:max-w-7/12 md:text-left lg:max-w-11/12 xl:max-w-10/12 2xl:text-2xl'>
@@ -36,7 +36,7 @@ export function HeroSection() {
 					</Button>
 				</div>
 			</div>
-			<div className='mx-auto size-48 sm:size-60 md:absolute md:top-4 md:-right-4 md:mx-0 md:size-72 lg:static lg:flex-1'>
+			<div className='mx-auto size-48 sm:size-60 md:absolute md:top-4 md:-right-4 md:mx-0 md:size-72 lg:static lg:my-8 lg:flex-1 xl:my-14 2xl:my-8'>
 				<HeroImage />
 			</div>
 		</section>

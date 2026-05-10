@@ -34,7 +34,7 @@ export function ATS({ score, tips }: ATSProps) {
 			<div className='mb-6 flex items-center gap-2 md:gap-4'>
 				<div className='size-10'>{iconSrc}</div>
 				<div>
-					<h2 className='flex items-center gap-1'>
+					<h2 className='flex items-center gap-1 font-heading'>
 						<span className='font-semibold text-2xl'>
 							ATS Score - {normalizedScore}
 						</span>

@@ -1,20 +1,19 @@
+@import url("https://fonts.googleapis.com/css2?family=Geom:ital,wght@0,300..900;1,300..900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
-@import "@fontsource-variable/syne";
-@import "@fontsource-variable/inter";
 
 @custom-variant dark (&:is(.dark *));
 
 @theme {
-	--font-syne: "Syne Variable", sans-serif;
+	--font-geom: "Geom", sans-serif;
 	--font-sans:
 		"Inter", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji",
 		"Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 }
 
 @theme inline {
-	--font-heading: var(--font-syne);
+	--font-heading: var(--font-geom);
 	--color-ring: var(--ring);
 	--color-input: var(--input);
 	--color-border: var(--border);

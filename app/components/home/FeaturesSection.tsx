@@ -12,19 +12,19 @@ export function FeaturesSection() {
 		<>
 			<section
 				className={cn(
-					'card card-shadow mb-6 flex flex-col border-2 bg-card-highlight lg:mx-8 lg:flex-row',
+					'card card-shadow mb-6 flex flex-col border-2 bg-card-highlight lg:mx-8 lg:flex-row lg:items-center',
 					'transition duration-200 ease-in',
 					isVisible ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'
 				)}
 			>
-				<div className='space-y-6 p-6 md:p-12'>
-					<h3 className='heading-shadow mr-3 font-bold font-heading text-5xl text-accent-foreground text-stroke-sm'>
+				<div className='space-y-6 p-6 md:px-12 md:pt-12 md:pb-0 lg:p-12'>
+					<h3 className='heading-shadow mr-3 font-bold font-heading text-4xl text-accent-foreground text-stroke-sm sm:text-5xl'>
 						Your Resume, But Sharper
 					</h3>
-					<p ref={textRef} className='text-pretty text-2xl'>
+					<p ref={textRef} className='text-pretty text-xl sm:text-2xl'>
 						We break things down into the stuff that actually matters:
 					</p>
-					<ul className='text-pretty text-lg'>
+					<ul className='text-pretty text-sm sm:text-lg'>
 						<li>
 							<strong>ATS Check</strong> – Can it pass the bots?
 						</li>
@@ -44,10 +44,10 @@ export function FeaturesSection() {
 					</ul>
 				</div>
 				<div className='m-3 h-fit w-fit rounded-lg border-2 bg-card p-6 sm:m-6 md:m-12 md:p-12 lg:w-1/2 lg:p-6 xl:my-auto xl:p-12'>
-					<h3 className='heading-shadow-sm mb-4 font-bold font-heading text-4xl text-ring text-stroke-sm'>
+					<h3 className='heading-shadow-sm mb-4 font-bold font-heading text-5xl text-ring text-stroke-sm'>
 						Polish it. Send it. Repeat.
 					</h3>
-					<p className='text-balance text-lg xl:text-xl'>
+					<p className='text-pretty text-lg xl:text-xl'>
 						A few small tweaks can go a long way. These are practical
 						suggestions you can apply right away, so your resume feels less like
 						a guess and more like a strategy. Let’s make your next application

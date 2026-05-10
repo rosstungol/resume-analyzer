@@ -21,12 +21,14 @@ function InstructionStep({ number, title, body }: InstructionStepProps) {
 				isVisible ? 'translate-y-0 opacity-100' : 'translate-y-4 opacity-0'
 			)}
 		>
-			<div className='space-y-4 px-10 pt-6 pb-10 lg:px-6 xl:px-10'>
+			<div className='space-y-4 px-6 pt-4 pb-8 sm:px-10 sm:pt-6 sm:pb-10 lg:px-6 xl:px-10'>
 				<h3>
 					<span className='heading-shadow mr-3 font-bold font-heading text-5xl text-accent-foreground text-stroke-sm'>
 						{number}
 					</span>
-					<span className='font-bold font-heading text-xl'>{title}</span>
+					<span className='font-bold font-heading text-2xl md:text-xl lg:text-lg xl:text-2xl'>
+						{title}
+					</span>
 				</h3>
 				<p ref={textRef} className='text-balance'>
 					{body}
@@ -39,7 +41,7 @@ function InstructionStep({ number, title, body }: InstructionStepProps) {
 export function InstructionsSection() {
 	return (
 		<section className='mt-20 mb-12 lg:mx-8'>
-			<h2 className='heading-shadow-sm mb-4 text-center font-bold font-heading text-3xl text-ring text-stroke-sm'>
+			<h2 className='heading-shadow-sm mb-4 text-center font-bold font-heading text-4xl text-ring text-stroke-sm'>
 				How it works
 			</h2>
 			<div>
