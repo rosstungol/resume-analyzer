@@ -2,9 +2,9 @@
 
 Give Your Resume a Glow-Up ✨
 
-A lightweight AI-powered tool that analyzes your resume against a specific job target and provides clear, actionable feedback—so you can apply with more confidence (and better results).
+A lightweight AI-powered tool that analyzes your resume against a specific job target and provides clear, actionable feedback—so you can apply with more confidence and better results.
 
-**Live Demo:** [Resmyze](https://resmyze-iv7y1.puter.site)
+**Live Demo:** [Resmyze](https://resmyze-28ah8.puter.site)
 
 ## Features
 
