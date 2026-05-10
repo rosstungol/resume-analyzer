@@ -10,8 +10,6 @@
 		"lint-format": "biome check --write"
 	},
 	"dependencies": {
-		"@fontsource-variable/inter": "^5.2.8",
-		"@fontsource-variable/syne": "^5.2.7",
 		"@react-router/node": "7.13.2",
 		"@react-router/serve": "7.13.2",
 		"class-variance-authority": "^0.7.1",
