@@ -27,54 +27,38 @@ A lightweight AI-powered tool that analyzes your resume against a specific job t
 - **Actionable Feedback**  
   Practical suggestions you can actually apply—no vague advice.
 
-## Tech Stack
-
-- **React** – UI layer  
-- **React Router** – Routing  
-- **Puter AI** – Resume analysis / AI feedback  
-- **TypeScript** – Type safety  
-- **Tailwind CSS** – Styling
-- **Biome** – Linting and Formatting 
-
 ## How It Works
 
 1. Enter job details (company, title, summary)  
 2. Upload your resume  
 3. Get instant analysis and feedback  
 
-Simple in, useful out.
+## Tech Stack
+
+- React
+- React Router
+- Puter AI
 
 ## Notes
 
-- This is a **demo / portfolio project**  
+- This is a **demo project**  
 - Results are AI-generated and meant for guidance, not final judgment  
-
 
 ## Getting Started
 
-### Installation
-
 Install the dependencies:
-
 ```bash
 npm install
 ```
 
-### Development
-
-Start the development server with HMR:
-
+Start the development server:
 ```bash
 npm run dev
-```
+``` 
 
-Your application will be available at `http://localhost:5173`.
+## Linter and Formatter
 
-## Building for Production
-
-Create a production build:
-
+Run the Biome.js linter and formatter:
 ```bash
-npm run build
+npm run lint-format
 ```
-
