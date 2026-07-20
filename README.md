@@ -31,18 +31,23 @@ A lightweight AI-powered tool that analyzes your resume against a specific job t
 
 1. Enter job details (company, title, summary)  
 2. Upload your resume  
-3. Get instant analysis and feedback  
-
-## Tech Stack
-
-- React
-- React Router
-- Puter AI
+3. Get instant analysis and feedback 
 
 ## Notes
 
 - This is a **demo project**  
 - Results are AI-generated and meant for guidance, not final judgment  
+
+## Tech Stack
+
+| Layer | Technology |
+|---|---|
+| Framework | React 19 + React Router 7 + TypeScript |
+| Backend | Puter.js | 
+| State | Zustand |
+| Styling | Tailwind v4 |
+| Build | Vite 7 |
+| Linter / Formatter | Biome |
 
 ## Getting Started
 
