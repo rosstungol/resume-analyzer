@@ -1,4 +1,5 @@
 import { create } from 'zustand'
+
 import type {
 	AIResponse,
 	ChatMessage,
@@ -7,6 +8,7 @@ import type {
 	PuterChatOptions,
 	PuterUser,
 } from '@/data/types/puter'
+import { AI_MODEL } from './response'
 
 declare global {
 	interface Window {
@@ -359,7 +361,9 @@ export const usePuterStore = create<PuterStore>((set, get) => {
 			],
 			undefined,
 			true,
-			{ model: 'claude-sonnet-4' }
+			{
+				model: AI_MODEL,
+			}
 		) as Promise<AIResponse | undefined>
 	}
 
