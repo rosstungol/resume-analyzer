@@ -1,3 +1,5 @@
+export const AI_MODEL = 'anthropic/claude-sonnet-5'
+
 export const AIResponseFormat = `
       type Feedback = {
       overallScore: number; //max 100
