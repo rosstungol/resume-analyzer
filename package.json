@@ -10,7 +10,7 @@
 		"lint": "vp lint",
 		"format": "vp fmt",
 		"check": "vp check",
-		"prepare": "vp config"
+		"prepare": "test ! -x node_modules/.bin/vp || vp config"
 	},
 	"dependencies": {
 		"@react-router/node": "7.13.2",
