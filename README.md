@@ -54,13 +54,12 @@ A lightweight AI-powered tool that analyzes your resume against a specific job t
 
 This project uses [Vite+](https://viteplus.dev) (`vp`) as its unified toolchain and [Bun](https://bun.sh) as its package manager.
 
-| Command             | Purpose                                                         |
-| ------------------- | --------------------------------------------------------------- |
-| `bun i`             | Install dependencies.                                           |
-| `bun run dev`       | Start dev server.                                               |
-| `bun run build`     | Build for production.                                           |
-| `bun run start`     | Serve built app (`react-router-serve ./build/server/index.js`). |
-| `bun run typecheck` | Run React Router typegen and TypeScript check.                  |
-| `bun run lint`      | Lint with oxlint.                                               |
-| `bun run format`    | Format code with oxfmt.                                         |
-| `bun run check`     | Run Vite+ checks (format/lint/typecheck as configured).         |
+| Command             | Purpose                                                 |
+| ------------------- | ------------------------------------------------------- |
+| `bun i`             | Install dependencies.                                   |
+| `bun run dev`       | Start dev server.                                       |
+| `bun run build`     | Build for production.                                   |
+| `bun run typecheck` | Run React Router typegen and TypeScript check.          |
+| `bun run lint`      | Lint with oxlint.                                       |
+| `bun run format`    | Format code with oxfmt.                                 |
+| `bun run check`     | Run Vite+ checks (format/lint/typecheck as configured). |

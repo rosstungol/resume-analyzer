@@ -56,5 +56,5 @@ One line: React Router 7 app using Puter.js for auth/storage/AI, rendered as SPA
 ## Toolchain
 
 - Package manager/runtime: Bun.
-- Commands: `vp dev`, `vp build`, `vp run start` (or script), `vp check`, `vp fmt`, `vp lint`. See package.json scripts.
+- Commands: `vp dev`, `vp build`, `vp check`, `vp fmt`, `vp lint`. See package.json scripts.
 - Config: vite.config.ts uses `defineConfig` from `vite-plus` with fmt/lint/staged.
