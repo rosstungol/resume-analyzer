@@ -40,15 +40,15 @@ A lightweight AI-powered tool that analyzes your resume against a specific job t
 
 ## Tech Stack
 
-| Layer                     | Technology                                      |
-| ------------------------- | ----------------------------------------------- |
-| Framework                 | React 19 + React Router 7 + TypeScript          |
-| Backend                   | Puter.js                                        |
-| State                     | Zustand                                         |
-| Styling                   | Tailwind v4                                     |
-| Build                     | Vite+ (Vite 7 via @voidzero-dev/vite-plus-core) |
-| Package manager / runtime | Bun                                             |
-| Linter / Formatter        | Vite+ (oxfmt / oxlint via `vp`)                 |
+| Layer                     | Technology                                          |
+| ------------------------- | --------------------------------------------------- |
+| Framework                 | React 19 + React Router 7 + TypeScript              |
+| Backend                   | Puter.js                                            |
+| State                     | Zustand                                             |
+| Styling                   | Tailwind v4                                         |
+| Build                     | Vite+ (Vite 8.3.4 via @voidzero-dev/vite-plus-core) |
+| Package manager / runtime | Bun                                                 |
+| Linter / Formatter        | Vite+ (oxfmt / oxlint via `vp`)                     |
 
 ## Commands
 

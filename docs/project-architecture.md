@@ -4,17 +4,17 @@ One line: React Router 7 app using Puter.js for auth/storage/AI, rendered as SPA
 
 ## Stack
 
-| Layer              | Tech                                                                                    | Notes                                        |
-| ------------------ | --------------------------------------------------------------------------------------- | -------------------------------------------- |
-| Framework          | React 19, React Router 7, TypeScript                                                    | SPA mode (see react-router.config.ts).       |
-| Build/tooling      | Vite+ (Vite 7 via @voidzero-dev/vite-plus-core), vite-tsconfig-paths, @tailwindcss/vite | Unified toolchain via `vp`.                  |
-| Styling            | Tailwind CSS v4, tw-animate-css, class-variance-authority, clsx, tailwind-merge         | Global styles in app/app.css.                |
-| UI                 | Radix UI, lucide-react                                                                  | Components in app/components/.               |
-| State              | Zustand                                                                                 | app/lib/puter.ts store.                      |
-| Data/validation    | zod                                                                                     | app/data/schemas.ts.                         |
-| PDF                | pdfjs-dist, react-dropzone                                                              | Resume upload/preview.                       |
-| Backend/services   | Puter.js (loaded via script in app/root.tsx)                                            | Auth, FS, KV, AI (no custom backend server). |
-| Formatting/linting | Vite+ (oxfmt/oxlint via vp)                                                             | Migrated from Biome.                         |
+| Layer              | Tech                                                                                        | Notes                                        |
+| ------------------ | ------------------------------------------------------------------------------------------- | -------------------------------------------- |
+| Framework          | React 19, React Router 7, TypeScript                                                        | SPA mode (see react-router.config.ts).       |
+| Build/tooling      | Vite+ (Vite 8.3.4 via @voidzero-dev/vite-plus-core), vite-tsconfig-paths, @tailwindcss/vite | Unified toolchain via `vp`.                  |
+| Styling            | Tailwind CSS v4, tw-animate-css, class-variance-authority, clsx, tailwind-merge             | Global styles in app/app.css.                |
+| UI                 | Radix UI, lucide-react                                                                      | Components in app/components/.               |
+| State              | Zustand                                                                                     | app/lib/puter.ts store.                      |
+| Data/validation    | zod                                                                                         | app/data/schemas.ts.                         |
+| PDF                | pdfjs-dist, react-dropzone                                                                  | Resume upload/preview.                       |
+| Backend/services   | Puter.js (loaded via script in app/root.tsx)                                                | Auth, FS, KV, AI (no custom backend server). |
+| Formatting/linting | Vite+ (oxfmt/oxlint via vp)                                                                 | Migrated from Biome.                         |
 
 ## Entry points
 
@@ -38,7 +38,7 @@ One line: React Router 7 app using Puter.js for auth/storage/AI, rendered as SPA
 ## Data flow
 
 1. `usePuterStore` (app/lib/puter.ts) initializes Puter API on client; exposes auth, FS, KV, AI.
-2. Upload flow: collect company/title/job summary, convert PDF to image/bytes, upload to Puter FS, run AI analysis (prompt + schema), save results to Puter KV/FS.
+2. Upload flow: `UploadForm` collects company/title/job summary, uploads the selected `File` directly to Puter FS, runs AI analysis on the uploaded path (prompt + schema), and saves the parsed results to Puter KV.
 3. Results rendered from stored data on `/resume/:id`.
 4. No server API routes - all operations go through Puter.js client.
 
