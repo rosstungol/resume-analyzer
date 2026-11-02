@@ -6,7 +6,7 @@ import tsconfigPaths from 'vite-tsconfig-paths'
 
 export default defineConfig({
 	staged: {
-		'*': 'vp check --fix',
+		'*': [() => 'react-router typegen', 'vp check --fix'],
 	},
 	fmt: {
 		printWidth: 80,

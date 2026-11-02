@@ -9,7 +9,7 @@
 		"typecheck": "react-router typegen && tsc",
 		"lint": "vp lint",
 		"format": "vp fmt",
-		"check": "vp check",
+		"check": "react-router typegen && vp check",
 		"prepare": "test ! -x node_modules/.bin/vp || vp config"
 	},
 	"dependencies": {
